@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="A source-led learning space about Srila Prabhupada's life, teachings, and legacy." />
+<title>Prabhupada Seva | Learn with sources</title>
+<style>
+:root{
+  --cream:#fbf7ed;--paper:#fffdf8;--ink:#342820;--muted:#6c5a4b;
+  --saffron:#b86820;--maroon:#672c25;--line:#e7d8c0;--leaf:#52725c;
+  --footer-bg:#30241f;--footer-ink:#f6e9d5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --cream:#211a15;--paper:#2a221c;--ink:#f2e6d3;--muted:#c9b7a0;
+    --saffron:#e0954a;--maroon:#e2a98f;--line:#4a3c30;--leaf:#8fb89a;
+    --footer-bg:#171310;--footer-ink:#f2e6d3;
+  }
+}
+:root[data-theme="dark"]{
+  --cream:#211a15;--paper:#2a221c;--ink:#f2e6d3;--muted:#c9b7a0;
+  --saffron:#e0954a;--maroon:#e2a98f;--line:#4a3c30;--leaf:#8fb89a;
+  --footer-bg:#171310;--footer-ink:#f2e6d3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:var(--cream);font:16px/1.65 Georgia,'Times New Roman',serif}
+a{color:inherit}
+.skip-link{position:absolute;left:-999px}
+.skip-link:focus{left:1rem;top:1rem;z-index:5;background:var(--paper);padding:.5rem}
+.demo-banner{width:100%;background:var(--maroon);color:#fff8eb;text-align:center;padding:.55rem 1rem;font:700 .8rem/1.3 Arial,sans-serif;letter-spacing:.02em}
+.site-header{width:min(1160px,calc(100% - 2rem));margin:auto;min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{font-weight:bold;text-decoration:none;letter-spacing:.02em;cursor:pointer}
+.brand span{color:var(--saffron)}
+.main-nav{display:flex;gap:1.4rem;font-size:.95rem;flex-wrap:wrap}
+.main-nav a{color:var(--muted);text-decoration:none;cursor:pointer}
+.main-nav a:hover,.main-nav a.active{color:var(--maroon)}
+.menu-button{display:none;font:inherit;border:1px solid var(--line);background:transparent;color:var(--ink);padding:.4rem .7rem;border-radius:3px;cursor:pointer}
+.section{width:min(1060px,calc(100% - 2rem));margin:0 auto;padding:5rem 0}
+.hero{text-align:center;min-height:calc(80vh - 76px);display:grid;align-content:center;justify-items:center}
+.eyebrow{margin:0 0 .85rem;text-transform:uppercase;letter-spacing:.15em;color:var(--saffron);font:700 .75rem/1.2 Arial,sans-serif}
+h1,h2,h3,p{margin-top:0}
+h1{max-width:880px;font-size:clamp(2.4rem,7vw,5rem);line-height:1.05;font-weight:normal;letter-spacing:-.04em}
+h2{font-size:clamp(2rem,5vw,3.4rem);line-height:1.08;font-weight:normal;letter-spacing:-.03em;margin-bottom:1rem}
+h3{font-size:1.35rem;margin-bottom:.45rem}
+.subtitle{max-width:670px;color:var(--muted);font-size:1.15rem}
+.actions{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin:1.8rem 0}
+.button{display:inline-block;padding:.7rem 1.05rem;border-radius:3px;text-decoration:none;font:700 .82rem/1 Arial,sans-serif;letter-spacing:.04em;cursor:pointer;border:none}
+.primary{color:white;background:var(--maroon)}
+.secondary{border:1px solid #bda88e;color:var(--maroon);background:transparent}
+.small{white-space:nowrap;font-size:.72rem;padding:.5rem .8rem}
+.review-note{color:var(--leaf);font-size:.85rem}
+.review-note span{font-size:.7rem}
+.framed{width:min(1160px,calc(100% - 2rem));padding:clamp(2.2rem,7vw,5rem);background:var(--paper);border:1px solid var(--line)}
+.section-intro{max-width:650px}
+.section-intro>p:last-child{color:var(--muted)}
+.timeline{padding:0;margin:3rem 0 0;list-style:none}
+.timeline-item{display:grid;grid-template-columns:130px 1fr;gap:2rem;padding:1.8rem 0;border-top:1px solid var(--line)}
+.timeline-item .year{color:var(--saffron);font:700 1.2rem/1 Arial,sans-serif}
+.timeline-item p{color:var(--muted);max-width:650px}
+.timeline-item a{color:var(--maroon);font:700 .85rem Arial,sans-serif;text-decoration:none}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.card{min-height:200px;padding:1.7rem;background:var(--paper);border:1px solid var(--line)}
+.card p{color:var(--muted)}
+.number{display:block;margin-bottom:2rem;color:var(--saffron);font:700 .78rem Arial,sans-serif}
+.status{display:inline-block;padding:.25rem .5rem;color:var(--muted);background:var(--cream);font:700 .68rem Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line)}
+.split{display:grid;grid-template-columns:1.2fr .8fr;gap:3rem;align-items:center}
+.quote-card{padding:2.2rem;background:var(--maroon);color:#fff8eb}
+.quote-card p{font-size:1.4rem;line-height:1.35}
+.quote-card span{color:#e9c99e;font-size:.85rem}
+.start-section{text-align:center}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:2.5rem}
+.steps div{padding:1.2rem .6rem}
+.steps b{display:grid;place-items:center;width:2rem;height:2rem;margin:auto;border:1px solid var(--saffron);border-radius:50%;color:var(--saffron);font:700 .8rem Arial,sans-serif}
+.steps p{margin:.8rem 0 0}
+.sources-list{margin-top:2rem}
+.source-record{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.3rem 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.source-record h3{margin:0;font-size:1.05rem}
+.source-record p{margin:.15rem 0 0;color:var(--muted);font-size:.9rem}
+.source-notice{margin:2rem 0 0;padding:1.2rem;border-left:3px solid var(--saffron);background:var(--paper);color:var(--muted)}
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:2rem max(1rem,calc((100% - 1060px)/2));color:var(--footer-ink);background:var(--footer-bg);font-size:.85rem}
+footer p{margin:0}
+.footer-links{display:flex;gap:1rem;flex-wrap:wrap}
+.footer-links a{text-decoration:none;color:var(--footer-ink);opacity:.85;cursor:pointer}
+.footer-links a:hover{opacity:1}
+.page-main{width:min(1060px,calc(100% - 2rem));margin:0 auto;padding:4.5rem 0;min-height:calc(100vh - 260px)}
+.page-main h1{max-width:760px}
+.lead{max-width:690px;color:var(--muted);font-size:1.15rem}
+.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:3rem}
+.content-grid>article,.notice{padding:1.8rem;background:var(--paper);border:1px solid var(--line)}
+.content-grid li{margin:.45rem 0}
+.page-cards{grid-template-columns:repeat(2,1fr)}
+.empty-state{margin:3rem 0;padding:3.5rem 2rem;text-align:center;background:var(--paper);border:1px dashed #bda88e}
+.empty-state>span{display:block;color:var(--saffron);font-size:2rem}
+.content-form{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3rem;padding:2rem;background:var(--paper);border:1px solid var(--line)}
+.content-form label{display:grid;gap:.4rem;color:var(--muted);font:700 .8rem Arial,sans-serif;letter-spacing:.03em}
+.content-form label.full{grid-column:1/-1}
+.content-form input,.content-form textarea,.content-form select{width:100%;padding:.7rem;border:1px solid #cdbda6;background:var(--cream);color:var(--ink);font:1rem Georgia,serif}
+.form-note{margin:1rem 0 0;color:var(--muted);font-size:.9rem;grid-column:1/-1}
+pre{white-space:pre-wrap;word-break:break-word;overflow-x:auto;background:var(--cream);border:1px solid var(--line);padding:1rem;font-size:.82rem;color:var(--muted)}
+.policy-block{margin-top:1.2rem}
+.policy-block h3{margin-top:2rem;color:var(--maroon)}
+.page{display:none}
+.page.active{display:block}
+@media(max-width:760px){
+  .site-header{position:relative}
+  .menu-button{display:block}
+  .main-nav{display:none;position:absolute;top:68px;right:0;width:200px;padding:1rem;background:var(--paper);border:1px solid var(--line);flex-direction:column;z-index:5}
+  .main-nav.open{display:flex}
+  .section{padding:3rem 0}
+  .hero{min-height:520px}
+  .card-grid,.steps,.split,.content-grid,.page-cards,.content-form{grid-template-columns:1fr}
+  .split{gap:1.5rem}
+  .source-record{align-items:flex-start;flex-direction:column}
+  .page-main{padding:3rem 0}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="demo-banner">🙏 Working preview for Tanvi &amp; Aayush — not the final design, content is placeholder/draft until sourced &amp; reviewed</div>
+
+<header class="site-header">
+  <a class="brand" data-nav="home"><span>✦</span> Prabhupada Seva</a>
+  <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav">Menu</button>
+  <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+    <a data-nav="home">Home</a>
+    <a data-nav="about">About</a>
+    <a data-nav="teachings">Teachings</a>
+    <a data-nav="lilas">Lilas</a>
+    <a data-nav="books">Books</a>
+    <a data-nav="iskcon-history">ISKCON History</a>
+    <a data-nav="sources">Sources</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <section class="hero section">
+      <p class="eyebrow">A source-led learning space</p>
+      <h1>His Divine Grace<br />A.C. Bhaktivedanta Swami Prabhupada</h1>
+      <p class="subtitle">Explore a life of service, the beginning of ISKCON, and pathways into Krishna consciousness — with every important claim connected to its source.</p>
+      <div class="actions">
+        <a class="button primary" data-scroll="life">Explore His Life</a>
+        <a class="button secondary" data-scroll="start">Begin Learning</a>
+      </div>
+      <p class="review-note"><span aria-hidden="true">●</span> Built with care by Aayush &amp; Tanvi. Content is reviewed before publication.</p>
+    </section>
+
+    <section id="life" class="section framed">
+      <div class="section-intro"><p class="eyebrow">The journey</p><h2>His Life</h2><p>A first verified timeline. Each entry links to the source used for its wording.</p></div>
+      <ol id="timeline" class="timeline" aria-label="Timeline of Srila Prabhupada's life"></ol>
+    </section>
+
+    <section class="section">
+      <div class="section-intro"><p class="eyebrow">Learn gradually</p><h2>Teachings</h2><p>These are learning paths, not uncited quotations. Full explanations will be added only after review.</p></div>
+      <div class="card-grid">
+        <article class="card"><span class="number">01</span><h3>What is bhakti?</h3><p>Start with an accessible introduction to devotional service and its practice.</p><span class="status">Content plan</span></article>
+        <article class="card"><span class="number">02</span><h3>Bhagavad-gita</h3><p>Understand why readers begin with this foundational text and where to read it legally.</p><span class="status">Content plan</span></article>
+        <article class="card"><span class="number">03</span><h3>Chanting &amp; sadhana</h3><p>A careful, beginner-friendly guide will be reviewed with references and local-association guidance.</p><span class="status">Content plan</span></article>
+      </div>
+      <p style="margin-top:1.5rem"><a class="button secondary small" data-nav="teachings">See all teachings →</a></p>
+    </section>
+
+    <section class="section split">
+      <div><p class="eyebrow">Stories with attribution</p><h2>Lilas &amp; Remembrances</h2><p>Stories are precious and must be handled respectfully. This section will distinguish documented history, a devotee's remembrance, and a reflection on its lesson.</p>
+      <p style="margin-top:1.2rem"><a class="button secondary small" data-nav="lilas">Open the Lilas page →</a></p></div>
+      <div class="quote-card"><p>"No story will be marked verified until its source, narrator, and wording have been reviewed."</p><span>— Project content policy</span></div>
+    </section>
+
+    <section id="start" class="section start-section">
+      <div class="section-intro" style="margin:0 auto"><p class="eyebrow">For newcomers</p><h2>Start your learning journey</h2></div>
+      <div class="steps">
+        <div><b>1</b><p>Meet Srila Prabhupada</p></div>
+        <div><b>2</b><p>Understand bhakti</p></div>
+        <div><b>3</b><p>Read Bhagavad-gita</p></div>
+        <div><b>4</b><p>Find good association</p></div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="section-intro"><p class="eyebrow">Transparency first</p><h2>Sources &amp; Review</h2><p>These first source records are visible so readers can check the material themselves.</p></div>
+      <p style="margin-top:1.2rem"><a class="button secondary small" data-nav="sources">View full source list →</a></p>
+      <p class="source-notice">If sources disagree, this project will show the difference and hold the wording for review. We will not publish unsupported claims.</p>
+    </section>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="page" id="page-about">
+    <div class="page-main">
+      <p class="eyebrow">About this project</p>
+      <h1>Learn with reverence and sources.</h1>
+      <p class="lead">Prabhupada Seva is being created by Aayush and Tanvi as a careful digital resource for devotees, students, researchers, and newcomers.</p>
+      <div class="content-grid">
+        <article><h2>What this website will offer</h2><ul>
+          <li>A sourced life timeline</li>
+          <li>Teachings and books for different levels of readers</li>
+          <li>Attributed lilas and remembrances</li>
+          <li>References beside important claims</li>
+        </ul></article>
+        <article class="notice"><h2>Our promise</h2><p>We do not present AI-generated, unsupported religious or historical content as authentic. Every public item is reviewed before publication.</p>
+          <a class="button secondary" data-scroll="content-policy">Read content policy ↓</a>
+        </article>
+      </div>
+
+      <div id="content-policy" class="policy-block">
+        <h2 style="margin-top:3rem">Content &amp; Source Policy</h2>
+        <p class="lead" style="font-size:1rem">This project exists to help visitors learn about Srila Prabhupada, his life, teachings, and legacy with reverence, clarity, and care.</p>
+
+        <h3>Required record for every content item</h3>
+        <p>Each timeline item, story, quotation, article, image, video, and audio link must record: title and category; source title, author or speaker, and stable link or reference; source type (primary text, lecture, conversation, official institution, biography, or devotee account); exact quotation location when a quotation is used; and reviewer, review date, and status (Draft, Verified, or Published).</p>
+
+        <h3>How content is labelled</h3>
+        <p><b>Historical fact</b> — supported by an identified reliable source. <b>Devotee account / remembrance</b> — attributed to the person or book, not presented as universally established history. <b>Reflection / lesson</b> — a clearly labelled explanation for readers, not a statement made by Srila Prabhupada unless directly cited. <b>Draft</b> — never public as verified material.</p>
+
+        <h3>Source preference</h3>
+        <p>Use Srila Prabhupada's original books, letters, lectures, and conversations first where relevant. For biography and institutional history, prefer official ISKCON, GBC, BBT, Vedabase, and reliable archival or biographical sources. Wikipedia may help locate references but is not a final authority.</p>
+
+        <h3>Conflicting information</h3>
+        <p>Do not hide disagreements. Add each source, describe the difference briefly, and keep the item in "Needs review" until Tanvi approves the final wording.</p>
+
+        <h3>Copyright and images</h3>
+        <p>Do not copy books, recordings, or photographs without permission. Prefer brief quotations with references and links to authorised reading, listening, or purchase pages. Record image creator, rights status, and credit before publishing.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHINGS -->
+  <div class="page" id="page-teachings">
+    <div class="page-main">
+      <p class="eyebrow">Guided learning</p>
+      <h1>Teachings</h1>
+      <p class="lead">A structured place to learn step by step. Articles will be added after their explanations and references are reviewed.</p>
+      <div class="card-grid page-cards">
+        <article class="card"><span class="number">01</span><h3>Bhakti</h3><p>A beginner-friendly introduction is planned.</p><span class="status">Planned</span></article>
+        <article class="card"><span class="number">02</span><h3>The Holy Name</h3><p>Verified sources and practical guidance will be added.</p><span class="status">Planned</span></article>
+        <article class="card"><span class="number">03</span><h3>Bhagavad-gita</h3><p>Find an appropriate starting path and authorized reading links.</p><span class="status">Planned</span></article>
+        <article class="card"><span class="number">04</span><h3>Guru &amp; sadhu-sanga</h3><p>A carefully reviewed learning guide is planned.</p><span class="status">Planned</span></article>
+      </div>
+    </div>
+  </div>
+
+  <!-- LILAS -->
+  <div class="page" id="page-lilas">
+    <div class="page-main">
+      <p class="eyebrow">Attributed stories</p>
+      <h1>Lilas &amp; Remembrances</h1>
+      <p class="lead">Tanvi is currently researching this collection. No stories are published yet, because each item must identify its source and be reviewed.</p>
+      <section class="empty-state">
+        <span>✦</span>
+        <h2>Collection in research</h2>
+        <p>Expected categories: early life, spiritual journey, Jaladuta, early ISKCON, travels, disciples, India, and final years.</p>
+        <a class="button primary" data-scroll="lila-template">See research template ↓</a>
+      </section>
+      <section class="notice">
+        <h2>How each story will be labelled</h2>
+        <p><b>Historical fact</b>, <b>devotee account</b>, and <b>reflection</b> will be visibly distinct. Readers will always be able to see the source.</p>
+      </section>
+
+      <div id="lila-template" style="margin-top:3rem">
+        <h2>Lila research template</h2>
+        <p class="lead" style="font-size:1rem">For every lila, Tanvi please fill in as much of this as you can — even short notes help. Aayush will format it for the site.</p>
+        <div class="content-grid" style="grid-template-columns:1fr">
+          <article>
+            <ul>
+              <li><b>Title</b> — short name for the story</li>
+              <li><b>Summary</b> — 1-2 sentence overview</li>
+              <li><b>Full story</b> — the complete account, in your own words</li>
+              <li><b>Time / place</b> — when and where it happened (approximate is fine)</li>
+              <li><b>Source</b> — book, lecture, conversation, or devotee's name/account it came from</li>
+              <li><b>Exact reference</b> — chapter, page, date, or timestamp if you have it</li>
+              <li><b>Lesson / reflection</b> — optional, clearly marked as reflection, not fact</li>
+              <li><b>Status</b> — Draft / Needs review / Verified / Published</li>
+            </ul>
+          </article>
+        </div>
+        <p class="lead" style="font-size:.95rem;margin-top:1rem">Raw data format (for reference — Aayush uses this on the technical side):</p>
+        <pre>{
+  "title": "",
+  "summary": "",
+  "body": "",
+  "period": { "startYear": null, "endYear": null, "display": "" },
+  "place": [],
+  "contentType": "devotee-account",
+  "sources": [{ "title": "", "authorOrSpeaker": "", "sourceType": "biography", "url": "", "reference": "", "quoteVerified": false }],
+  "reflection": "",
+  "researcher": "Tanvi",
+  "reviewer": "",
+  "status": "draft"
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKS -->
+  <div class="page" id="page-books">
+    <div class="page-main">
+      <p class="eyebrow">A reading guide</p>
+      <h1>Books</h1>
+      <p class="lead">This future library will guide readers to authorized editions and explain each book without reproducing copyrighted text.</p>
+      <div class="card-grid page-cards">
+        <article class="card"><h3>Bhagavad-gita As It Is</h3><p>Reader guide and authorized links: planned.</p><span class="status">Planned</span></article>
+        <article class="card"><h3>Srimad-Bhagavatam</h3><p>Reader guide and authorized links: planned.</p><span class="status">Planned</span></article>
+        <article class="card"><h3>Sri Caitanya-caritamrita</h3><p>Reader guide and authorized links: planned.</p><span class="status">Planned</span></article>
+      </div>
+    </div>
+  </div>
+
+  <!-- ISKCON HISTORY -->
+  <div class="page" id="page-iskcon-history">
+    <div class="page-main">
+      <p class="eyebrow">Institutional history</p>
+      <h1>How ISKCON Started</h1>
+      <p class="lead">A source-linked guide to the beginning and worldwide growth of the International Society for Krishna Consciousness.</p>
+      <section class="notice">
+        <h2>Research status</h2>
+        <p>The detailed article will be developed from verified sources. The starter timeline on the home page already links to official ISKCON and GBC source pages.</p>
+        <a class="button secondary" href="https://iskcon.org/history/" target="_blank" rel="noreferrer">Read official ISKCON history ↗</a>
+      </section>
+    </div>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="page" id="page-sources">
+    <div class="page-main">
+      <p class="eyebrow">Transparency first</p>
+      <h1>Sources &amp; Review</h1>
+      <p class="lead">Every claim on this site should be traceable to a source. Here is the starter list used for the current timeline.</p>
+      <div id="sources-list" class="sources-list"></div>
+      <p class="source-notice">If sources disagree, this project will show the difference and hold the wording for review. We will not publish unsupported claims.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Prabhupada Seva · A learning project by Aayush &amp; Tanvi</p>
+  <div class="footer-links">
+    <a data-nav="about">About</a>
+    <a data-nav="sources">Sources</a>
+    <span style="opacity:.6">Respectful · Educational · Source-led</span>
+  </div>
+</footer>
+
+<script>
+const sources = [
+  { id: "gbc-biography", name: "Biography of Srila Prabhupada", publisher: "ISKCON Governing Body Commission", url: "https://gbc.iskcon.org/srila-prabhupada/", type: "Official institutional biography" },
+  { id: "iskcon-history", name: "History of ISKCON", publisher: "ISKCON", url: "https://iskcon.org/history/", type: "Official institutional history" }
+];
+
+const timeline = [
+  { year: "1896", title: "Birth in Calcutta", text: "The GBC biography records his birth as Abhay Charan De on September 1, 1896, in Calcutta.", source: "gbc-biography" },
+  { year: "1922", title: "Meeting Srila Bhaktisiddhanta Sarasvati", text: "The GBC biography describes this meeting as deeply influential on Abhay's future calling.", source: "gbc-biography" },
+  { year: "1965", title: "Journey to the United States", text: "Official ISKCON and GBC pages record his journey west aboard the Jaladuta in 1965.", source: "iskcon-history" },
+  { year: "1966", title: "Foundation of ISKCON", text: "The GBC biography records the official registration of ISKCON in New York on July 11, 1966.", source: "gbc-biography" }
+];
+
+const sourceById = Object.fromEntries(sources.map((s) => [s.id, s]));
+
+function renderTimeline(){
+  const el = document.querySelector("#timeline");
+  if(!el) return;
+  el.innerHTML = timeline.map((item) => {
+    const source = sourceById[item.source];
+    return `<li class="timeline-item"><p class="year">${item.year}</p><div><h3>${item.title}</h3><p>${item.text}</p><a href="${source.url}" target="_blank" rel="noreferrer">View source ↗</a></div></li>`;
+  }).join("");
+}
+
+function renderSources(){
+  const el = document.querySelector("#sources-list");
+  if(!el) return;
+  el.innerHTML = sources.map((s) => `<article class="source-record"><div><h3>${s.name}</h3><p>${s.publisher} · ${s.type}</p></div><a class="button secondary small" href="${s.url}" target="_blank" rel="noreferrer">Open source ↗</a></article>`).join("");
+}
+
+renderTimeline();
+renderSources();
+
+// mobile menu
+const menuButton = document.querySelector(".menu-button");
+const navigation = document.querySelector(".main-nav");
+menuButton.addEventListener("click", () => {
+  const open = menuButton.getAttribute("aria-expanded") === "true";
+  menuButton.setAttribute("aria-expanded", String(!open));
+  navigation.classList.toggle("open", !open);
+});
+
+// simple SPA routing between pages
+const pageIds = ["home","about","teachings","lilas","books","iskcon-history","sources"];
+function showPage(name){
+  if(!pageIds.includes(name)) name = "home";
+  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+  const target = document.querySelector("#page-" + name);
+  if(target) target.classList.add("active");
+  document.querySelectorAll(".main-nav a[data-nav]").forEach((a) => {
+    a.classList.toggle("active", a.getAttribute("data-nav") === name);
+  });
+  window.scrollTo(0,0);
+  navigation.classList.remove("open");
+  menuButton.setAttribute("aria-expanded","false");
+}
+
+document.querySelectorAll("[data-nav]").forEach((el) => {
+  el.addEventListener("click", () => {
+    const name = el.getAttribute("data-nav");
+    history.replaceState(null, "", "#" + name);
+    showPage(name);
+  });
+});
+
+document.querySelectorAll("[data-scroll]").forEach((el) => {
+  el.addEventListener("click", () => {
+    const id = el.getAttribute("data-scroll");
+    const target = document.getElementById(id);
+    if(target) target.scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+// initial route
+const initial = (location.hash || "").replace("#","");
+showPage(initial || "home");
+</script>
+</body>
+</html>
