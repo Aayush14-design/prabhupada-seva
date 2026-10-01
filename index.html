@@ -1,426 +1,796 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="A source-led learning space about Srila Prabhupada's life, teachings, and legacy." />
-<title>Prabhupada Seva | Learn with sources</title>
-<style>
-:root{
-  --cream:#fbf7ed;--paper:#fffdf8;--ink:#342820;--muted:#6c5a4b;
-  --saffron:#b86820;--maroon:#672c25;--line:#e7d8c0;--leaf:#52725c;
-  --footer-bg:#30241f;--footer-ink:#f6e9d5;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --cream:#211a15;--paper:#2a221c;--ink:#f2e6d3;--muted:#c9b7a0;
-    --saffron:#e0954a;--maroon:#e2a98f;--line:#4a3c30;--leaf:#8fb89a;
-    --footer-bg:#171310;--footer-ink:#f2e6d3;
-  }
-}
-:root[data-theme="dark"]{
-  --cream:#211a15;--paper:#2a221c;--ink:#f2e6d3;--muted:#c9b7a0;
-  --saffron:#e0954a;--maroon:#e2a98f;--line:#4a3c30;--leaf:#8fb89a;
-  --footer-bg:#171310;--footer-ink:#f2e6d3;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;color:var(--ink);background:var(--cream);font:16px/1.65 Georgia,'Times New Roman',serif}
-a{color:inherit}
-.skip-link{position:absolute;left:-999px}
-.skip-link:focus{left:1rem;top:1rem;z-index:5;background:var(--paper);padding:.5rem}
-.demo-banner{width:100%;background:var(--maroon);color:#fff8eb;text-align:center;padding:.55rem 1rem;font:700 .8rem/1.3 Arial,sans-serif;letter-spacing:.02em}
-.site-header{width:min(1160px,calc(100% - 2rem));margin:auto;min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.brand{font-weight:bold;text-decoration:none;letter-spacing:.02em;cursor:pointer}
-.brand span{color:var(--saffron)}
-.main-nav{display:flex;gap:1.4rem;font-size:.95rem;flex-wrap:wrap}
-.main-nav a{color:var(--muted);text-decoration:none;cursor:pointer}
-.main-nav a:hover,.main-nav a.active{color:var(--maroon)}
-.menu-button{display:none;font:inherit;border:1px solid var(--line);background:transparent;color:var(--ink);padding:.4rem .7rem;border-radius:3px;cursor:pointer}
-.section{width:min(1060px,calc(100% - 2rem));margin:0 auto;padding:5rem 0}
-.hero{text-align:center;min-height:calc(80vh - 76px);display:grid;align-content:center;justify-items:center}
-.eyebrow{margin:0 0 .85rem;text-transform:uppercase;letter-spacing:.15em;color:var(--saffron);font:700 .75rem/1.2 Arial,sans-serif}
-h1,h2,h3,p{margin-top:0}
-h1{max-width:880px;font-size:clamp(2.4rem,7vw,5rem);line-height:1.05;font-weight:normal;letter-spacing:-.04em}
-h2{font-size:clamp(2rem,5vw,3.4rem);line-height:1.08;font-weight:normal;letter-spacing:-.03em;margin-bottom:1rem}
-h3{font-size:1.35rem;margin-bottom:.45rem}
-.subtitle{max-width:670px;color:var(--muted);font-size:1.15rem}
-.actions{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin:1.8rem 0}
-.button{display:inline-block;padding:.7rem 1.05rem;border-radius:3px;text-decoration:none;font:700 .82rem/1 Arial,sans-serif;letter-spacing:.04em;cursor:pointer;border:none}
-.primary{color:white;background:var(--maroon)}
-.secondary{border:1px solid #bda88e;color:var(--maroon);background:transparent}
-.small{white-space:nowrap;font-size:.72rem;padding:.5rem .8rem}
-.review-note{color:var(--leaf);font-size:.85rem}
-.review-note span{font-size:.7rem}
-.framed{width:min(1160px,calc(100% - 2rem));padding:clamp(2.2rem,7vw,5rem);background:var(--paper);border:1px solid var(--line)}
-.section-intro{max-width:650px}
-.section-intro>p:last-child{color:var(--muted)}
-.timeline{padding:0;margin:3rem 0 0;list-style:none}
-.timeline-item{display:grid;grid-template-columns:130px 1fr;gap:2rem;padding:1.8rem 0;border-top:1px solid var(--line)}
-.timeline-item .year{color:var(--saffron);font:700 1.2rem/1 Arial,sans-serif}
-.timeline-item p{color:var(--muted);max-width:650px}
-.timeline-item a{color:var(--maroon);font:700 .85rem Arial,sans-serif;text-decoration:none}
-.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
-.card{min-height:200px;padding:1.7rem;background:var(--paper);border:1px solid var(--line)}
-.card p{color:var(--muted)}
-.number{display:block;margin-bottom:2rem;color:var(--saffron);font:700 .78rem Arial,sans-serif}
-.status{display:inline-block;padding:.25rem .5rem;color:var(--muted);background:var(--cream);font:700 .68rem Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line)}
-.split{display:grid;grid-template-columns:1.2fr .8fr;gap:3rem;align-items:center}
-.quote-card{padding:2.2rem;background:var(--maroon);color:#fff8eb}
-.quote-card p{font-size:1.4rem;line-height:1.35}
-.quote-card span{color:#e9c99e;font-size:.85rem}
-.start-section{text-align:center}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:2.5rem}
-.steps div{padding:1.2rem .6rem}
-.steps b{display:grid;place-items:center;width:2rem;height:2rem;margin:auto;border:1px solid var(--saffron);border-radius:50%;color:var(--saffron);font:700 .8rem Arial,sans-serif}
-.steps p{margin:.8rem 0 0}
-.sources-list{margin-top:2rem}
-.source-record{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.3rem 0;border-top:1px solid var(--line);flex-wrap:wrap}
-.source-record h3{margin:0;font-size:1.05rem}
-.source-record p{margin:.15rem 0 0;color:var(--muted);font-size:.9rem}
-.source-notice{margin:2rem 0 0;padding:1.2rem;border-left:3px solid var(--saffron);background:var(--paper);color:var(--muted)}
-footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:2rem max(1rem,calc((100% - 1060px)/2));color:var(--footer-ink);background:var(--footer-bg);font-size:.85rem}
-footer p{margin:0}
-.footer-links{display:flex;gap:1rem;flex-wrap:wrap}
-.footer-links a{text-decoration:none;color:var(--footer-ink);opacity:.85;cursor:pointer}
-.footer-links a:hover{opacity:1}
-.page-main{width:min(1060px,calc(100% - 2rem));margin:0 auto;padding:4.5rem 0;min-height:calc(100vh - 260px)}
-.page-main h1{max-width:760px}
-.lead{max-width:690px;color:var(--muted);font-size:1.15rem}
-.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:3rem}
-.content-grid>article,.notice{padding:1.8rem;background:var(--paper);border:1px solid var(--line)}
-.content-grid li{margin:.45rem 0}
-.page-cards{grid-template-columns:repeat(2,1fr)}
-.empty-state{margin:3rem 0;padding:3.5rem 2rem;text-align:center;background:var(--paper);border:1px dashed #bda88e}
-.empty-state>span{display:block;color:var(--saffron);font-size:2rem}
-.content-form{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3rem;padding:2rem;background:var(--paper);border:1px solid var(--line)}
-.content-form label{display:grid;gap:.4rem;color:var(--muted);font:700 .8rem Arial,sans-serif;letter-spacing:.03em}
-.content-form label.full{grid-column:1/-1}
-.content-form input,.content-form textarea,.content-form select{width:100%;padding:.7rem;border:1px solid #cdbda6;background:var(--cream);color:var(--ink);font:1rem Georgia,serif}
-.form-note{margin:1rem 0 0;color:var(--muted);font-size:.9rem;grid-column:1/-1}
-pre{white-space:pre-wrap;word-break:break-word;overflow-x:auto;background:var(--cream);border:1px solid var(--line);padding:1rem;font-size:.82rem;color:var(--muted)}
-.policy-block{margin-top:1.2rem}
-.policy-block h3{margin-top:2rem;color:var(--maroon)}
-.page{display:none}
-.page.active{display:block}
-@media(max-width:760px){
-  .site-header{position:relative}
-  .menu-button{display:block}
-  .main-nav{display:none;position:absolute;top:68px;right:0;width:200px;padding:1rem;background:var(--paper);border:1px solid var(--line);flex-direction:column;z-index:5}
-  .main-nav.open{display:flex}
-  .section{padding:3rem 0}
-  .hero{min-height:520px}
-  .card-grid,.steps,.split,.content-grid,.page-cards,.content-form{grid-template-columns:1fr}
-  .split{gap:1.5rem}
-  .source-record{align-items:flex-start;flex-direction:column}
-  .page-main{padding:3rem 0}
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Prabhupada Seva — A source-led learning space dedicated to Srila Prabhupada's life, teachings, lilas, and books." />
+  <title>Prabhupada Seva | Learn with Sources</title>
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+  
+  <!-- Favicons -->
+  <link rel="icon" type="image/webp" href="images/prabhupadji-image.webp" />
+  <link rel="apple-touch-icon" href="images/prabhupadji-image.webp" />
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
-<div class="demo-banner">🙏 Working preview for Tanvi &amp; Aayush — not the final design, content is placeholder/draft until sourced &amp; reviewed</div>
 
-<header class="site-header">
-  <a class="brand" data-nav="home"><span>✦</span> Prabhupada Seva</a>
-  <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav">Menu</button>
-  <nav id="main-nav" class="main-nav" aria-label="Main navigation">
-    <a data-nav="home">Home</a>
-    <a data-nav="about">About</a>
-    <a data-nav="teachings">Teachings</a>
-    <a data-nav="lilas">Lilas</a>
-    <a data-nav="books">Books</a>
-    <a data-nav="iskcon-history">ISKCON History</a>
-    <a data-nav="sources">Sources</a>
-  </nav>
-</header>
+<body>
 
-<main id="main">
-
-  <!-- HOME -->
-  <div class="page active" id="page-home">
-    <section class="hero section">
-      <p class="eyebrow">A source-led learning space</p>
-      <h1>His Divine Grace<br />A.C. Bhaktivedanta Swami Prabhupada</h1>
-      <p class="subtitle">Explore a life of service, the beginning of ISKCON, and pathways into Krishna consciousness — with every important claim connected to its source.</p>
-      <div class="actions">
-        <a class="button primary" data-scroll="life">Explore His Life</a>
-        <a class="button secondary" data-scroll="start">Begin Learning</a>
-      </div>
-      <p class="review-note"><span aria-hidden="true">●</span> Built with care by Aayush &amp; Tanvi. Content is reviewed before publication.</p>
-    </section>
-
-    <section id="life" class="section framed">
-      <div class="section-intro"><p class="eyebrow">The journey</p><h2>His Life</h2><p>A first verified timeline. Each entry links to the source used for its wording.</p></div>
-      <ol id="timeline" class="timeline" aria-label="Timeline of Srila Prabhupada's life"></ol>
-    </section>
-
-    <section class="section">
-      <div class="section-intro"><p class="eyebrow">Learn gradually</p><h2>Teachings</h2><p>These are learning paths, not uncited quotations. Full explanations will be added only after review.</p></div>
-      <div class="card-grid">
-        <article class="card"><span class="number">01</span><h3>What is bhakti?</h3><p>Start with an accessible introduction to devotional service and its practice.</p><span class="status">Content plan</span></article>
-        <article class="card"><span class="number">02</span><h3>Bhagavad-gita</h3><p>Understand why readers begin with this foundational text and where to read it legally.</p><span class="status">Content plan</span></article>
-        <article class="card"><span class="number">03</span><h3>Chanting &amp; sadhana</h3><p>A careful, beginner-friendly guide will be reviewed with references and local-association guidance.</p><span class="status">Content plan</span></article>
-      </div>
-      <p style="margin-top:1.5rem"><a class="button secondary small" data-nav="teachings">See all teachings →</a></p>
-    </section>
-
-    <section class="section split">
-      <div><p class="eyebrow">Stories with attribution</p><h2>Lilas &amp; Remembrances</h2><p>Stories are precious and must be handled respectfully. This section will distinguish documented history, a devotee's remembrance, and a reflection on its lesson.</p>
-      <p style="margin-top:1.2rem"><a class="button secondary small" data-nav="lilas">Open the Lilas page →</a></p></div>
-      <div class="quote-card"><p>"No story will be marked verified until its source, narrator, and wording have been reviewed."</p><span>— Project content policy</span></div>
-    </section>
-
-    <section id="start" class="section start-section">
-      <div class="section-intro" style="margin:0 auto"><p class="eyebrow">For newcomers</p><h2>Start your learning journey</h2></div>
-      <div class="steps">
-        <div><b>1</b><p>Meet Srila Prabhupada</p></div>
-        <div><b>2</b><p>Understand bhakti</p></div>
-        <div><b>3</b><p>Read Bhagavad-gita</p></div>
-        <div><b>4</b><p>Find good association</p></div>
-      </div>
-    </section>
-
-    <section class="section" style="padding-top:0">
-      <div class="section-intro"><p class="eyebrow">Transparency first</p><h2>Sources &amp; Review</h2><p>These first source records are visible so readers can check the material themselves.</p></div>
-      <p style="margin-top:1.2rem"><a class="button secondary small" data-nav="sources">View full source list →</a></p>
-      <p class="source-notice">If sources disagree, this project will show the difference and hold the wording for review. We will not publish unsupported claims.</p>
-    </section>
-  </div>
-
-  <!-- ABOUT -->
-  <div class="page" id="page-about">
-    <div class="page-main">
-      <p class="eyebrow">About this project</p>
-      <h1>Learn with reverence and sources.</h1>
-      <p class="lead">Prabhupada Seva is being created by Aayush and Tanvi as a careful digital resource for devotees, students, researchers, and newcomers.</p>
-      <div class="content-grid">
-        <article><h2>What this website will offer</h2><ul>
-          <li>A sourced life timeline</li>
-          <li>Teachings and books for different levels of readers</li>
-          <li>Attributed lilas and remembrances</li>
-          <li>References beside important claims</li>
-        </ul></article>
-        <article class="notice"><h2>Our promise</h2><p>We do not present AI-generated, unsupported religious or historical content as authentic. Every public item is reviewed before publication.</p>
-          <a class="button secondary" data-scroll="content-policy">Read content policy ↓</a>
-        </article>
-      </div>
-
-      <div id="content-policy" class="policy-block">
-        <h2 style="margin-top:3rem">Content &amp; Source Policy</h2>
-        <p class="lead" style="font-size:1rem">This project exists to help visitors learn about Srila Prabhupada, his life, teachings, and legacy with reverence, clarity, and care.</p>
-
-        <h3>Required record for every content item</h3>
-        <p>Each timeline item, story, quotation, article, image, video, and audio link must record: title and category; source title, author or speaker, and stable link or reference; source type (primary text, lecture, conversation, official institution, biography, or devotee account); exact quotation location when a quotation is used; and reviewer, review date, and status (Draft, Verified, or Published).</p>
-
-        <h3>How content is labelled</h3>
-        <p><b>Historical fact</b> — supported by an identified reliable source. <b>Devotee account / remembrance</b> — attributed to the person or book, not presented as universally established history. <b>Reflection / lesson</b> — a clearly labelled explanation for readers, not a statement made by Srila Prabhupada unless directly cited. <b>Draft</b> — never public as verified material.</p>
-
-        <h3>Source preference</h3>
-        <p>Use Srila Prabhupada's original books, letters, lectures, and conversations first where relevant. For biography and institutional history, prefer official ISKCON, GBC, BBT, Vedabase, and reliable archival or biographical sources. Wikipedia may help locate references but is not a final authority.</p>
-
-        <h3>Conflicting information</h3>
-        <p>Do not hide disagreements. Add each source, describe the difference briefly, and keep the item in "Needs review" until Tanvi approves the final wording.</p>
-
-        <h3>Copyright and images</h3>
-        <p>Do not copy books, recordings, or photographs without permission. Prefer brief quotations with references and links to authorised reading, listening, or purchase pages. Record image creator, rights status, and credit before publishing.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- TEACHINGS -->
-  <div class="page" id="page-teachings">
-    <div class="page-main">
-      <p class="eyebrow">Guided learning</p>
-      <h1>Teachings</h1>
-      <p class="lead">A structured place to learn step by step. Articles will be added after their explanations and references are reviewed.</p>
-      <div class="card-grid page-cards">
-        <article class="card"><span class="number">01</span><h3>Bhakti</h3><p>A beginner-friendly introduction is planned.</p><span class="status">Planned</span></article>
-        <article class="card"><span class="number">02</span><h3>The Holy Name</h3><p>Verified sources and practical guidance will be added.</p><span class="status">Planned</span></article>
-        <article class="card"><span class="number">03</span><h3>Bhagavad-gita</h3><p>Find an appropriate starting path and authorized reading links.</p><span class="status">Planned</span></article>
-        <article class="card"><span class="number">04</span><h3>Guru &amp; sadhu-sanga</h3><p>A carefully reviewed learning guide is planned.</p><span class="status">Planned</span></article>
-      </div>
-    </div>
-  </div>
-
-  <!-- LILAS -->
-  <div class="page" id="page-lilas">
-    <div class="page-main">
-      <p class="eyebrow">Attributed stories</p>
-      <h1>Lilas &amp; Remembrances</h1>
-      <p class="lead">Tanvi is currently researching this collection. No stories are published yet, because each item must identify its source and be reviewed.</p>
-      <section class="empty-state">
-        <span>✦</span>
-        <h2>Collection in research</h2>
-        <p>Expected categories: early life, spiritual journey, Jaladuta, early ISKCON, travels, disciples, India, and final years.</p>
-        <a class="button primary" data-scroll="lila-template">See research template ↓</a>
-      </section>
-      <section class="notice">
-        <h2>How each story will be labelled</h2>
-        <p><b>Historical fact</b>, <b>devotee account</b>, and <b>reflection</b> will be visibly distinct. Readers will always be able to see the source.</p>
-      </section>
-
-      <div id="lila-template" style="margin-top:3rem">
-        <h2>Lila research template</h2>
-        <p class="lead" style="font-size:1rem">For every lila, Tanvi please fill in as much of this as you can — even short notes help. Aayush will format it for the site.</p>
-        <div class="content-grid" style="grid-template-columns:1fr">
-          <article>
-            <ul>
-              <li><b>Title</b> — short name for the story</li>
-              <li><b>Summary</b> — 1-2 sentence overview</li>
-              <li><b>Full story</b> — the complete account, in your own words</li>
-              <li><b>Time / place</b> — when and where it happened (approximate is fine)</li>
-              <li><b>Source</b> — book, lecture, conversation, or devotee's name/account it came from</li>
-              <li><b>Exact reference</b> — chapter, page, date, or timestamp if you have it</li>
-              <li><b>Lesson / reflection</b> — optional, clearly marked as reflection, not fact</li>
-              <li><b>Status</b> — Draft / Needs review / Verified / Published</li>
-            </ul>
-          </article>
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="header-container">
+      <a class="brand" data-nav="home">
+        <div class="brand-avatar-wrap">
+          <img src="images/prabhupadji-image.webp" alt="Srila Prabhupada" class="brand-avatar" />
         </div>
-        <p class="lead" style="font-size:.95rem;margin-top:1rem">Raw data format (for reference — Aayush uses this on the technical side):</p>
-        <pre>{
-  "title": "",
-  "summary": "",
-  "body": "",
-  "period": { "startYear": null, "endYear": null, "display": "" },
-  "place": [],
-  "contentType": "devotee-account",
-  "sources": [{ "title": "", "authorOrSpeaker": "", "sourceType": "biography", "url": "", "reference": "", "quoteVerified": false }],
-  "reflection": "",
-  "researcher": "Tanvi",
-  "reviewer": "",
-  "status": "draft"
-}</pre>
+        <span>Prabhupada <span class="highlight">Seva</span></span>
+      </a>
+
+      <!-- Visitor Navigation (Clean, Public View) -->
+      <nav id="main-nav" class="main-nav" aria-label="Main Navigation">
+        <a class="nav-link" data-nav="home" data-i18n="nav_home">Home</a>
+        <a class="nav-link" data-nav="timeline" data-i18n="nav_timeline">Leela</a>
+        <a class="nav-link" data-nav="teachings" data-i18n="nav_teachings">Teachings</a>
+        <a class="nav-link" data-nav="books" data-i18n="nav_books">Library</a>
+        <a class="nav-link" data-nav="centers" data-i18n="nav_centers">Global Centers</a>
+        <a class="nav-link" data-nav="sources" data-i18n="nav_sources">Sources</a>
+        <a class="nav-link" data-nav="about" data-i18n="nav_about">About</a>
+      </nav>
+
+      <div class="header-controls">
+        <!-- Discreet Editor Mode Switcher (For Aayush & Tanvi) -->
+        <div class="mode-toggle-pill">
+          <button id="mode-user-btn" class="mode-btn active" title="Switch to Public Visitor View" data-i18n="mode_user">🌐 Visitor</button>
+          <button id="mode-admin-btn" class="mode-btn" title="Switch to Editor Studio (Aayush & Tanvi)" data-i18n="mode_admin">🔑 Studio</button>
+        </div>
+
+        <!-- i18n Language Switcher -->
+        <select id="lang-select" aria-label="Select Language">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="gu">ગુજરાતી</option>
+        </select>
+        <button id="theme-toggle" class="btn-icon" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+          <span>🌙</span>
+        </button>
+        <button id="menu-toggle" class="btn-icon menu-toggle" aria-label="Toggle Mobile Menu">
+          ☰
+        </button>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- BOOKS -->
-  <div class="page" id="page-books">
-    <div class="page-main">
-      <p class="eyebrow">A reading guide</p>
-      <h1>Books</h1>
-      <p class="lead">This future library will guide readers to authorized editions and explain each book without reproducing copyrighted text.</p>
-      <div class="card-grid page-cards">
-        <article class="card"><h3>Bhagavad-gita As It Is</h3><p>Reader guide and authorized links: planned.</p><span class="status">Planned</span></article>
-        <article class="card"><h3>Srimad-Bhagavatam</h3><p>Reader guide and authorized links: planned.</p><span class="status">Planned</span></article>
-        <article class="card"><h3>Sri Caitanya-caritamrita</h3><p>Reader guide and authorized links: planned.</p><span class="status">Planned</span></article>
+  <!-- Main Content Wrapper -->
+  <main class="main-wrapper">
+
+    <!-- HOME PAGE -->
+    <section id="page-home" class="page-section active">
+      
+      <!-- 1. HERO SECTION: "Who is Srila Prabhupada?" (PROMINENTLY CENTERED) -->
+      <div class="hero-centered-banner">
+        <div class="container" style="max-width: 900px; text-align: center; padding: 1rem 1.5rem 2rem;">
+          <span class="hero-eyebrow" data-i18n="hero_eyebrow" style="display:inline-block; margin-bottom: 0.75rem;">
+            ✦ Source-Led Devotional Portal
+          </span>
+          <h1 class="hero-who-title-centered" data-i18n="hero_who_title">
+            Who is <span class="highlight-saffron">Srila Prabhupada?</span>
+          </h1>
+
+          <!-- Visually Centered Portrait Frame -->
+          <div class="centered-portrait-wrap">
+            <div class="centered-portrait-frame">
+              <img src="images/srila-prabhupad.jpg" alt="His Divine Grace A.C. Bhaktivedanta Swami Prabhupada" class="centered-portrait-img" loading="eager" />
+            </div>
+            <div class="centered-portrait-caption">
+              <span class="caption-title" data-i18n="portrait_title">His Divine Grace</span>
+              <span class="caption-name" data-i18n="portrait_name">A.C. Bhaktivedanta Swami Prabhupada</span>
+              <span class="caption-dates" data-i18n="portrait_dates">1896 – 1977</span>
+            </div>
+          </div>
+
+          <p class="hero-subtitle-centered" data-i18n="hero_who_subtitle">
+            His Divine Grace A.C. Bhaktivedanta Swami Prabhupada (1896–1977) is the Founder-Acharya of the International Society for Krishna Consciousness (ISKCON). He presented the timeless wisdom of India's Vedic literature to the modern world with unexcelled clarity, devotion, and source-grounded authenticity.
+          </p>
+          <div class="hero-actions-centered">
+            <a class="btn btn-primary" data-nav="timeline" data-i18n="btn_discover_life">Discover His Life →</a>
+            <a class="btn btn-secondary" data-nav="teachings" data-i18n="btn_begin_learning">Explore Teachings</a>
+            <a class="btn btn-saffron" data-nav="books" data-i18n="btn_read_books">Read Scriptures →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+
+        <!-- 2. DEDICATED INTRODUCTION SECTION (परिचय) -->
+        <div class="glass-card home-intro-full-card" style="margin-bottom: 3.5rem;">
+          <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+            <span class="badge badge-devotee" style="margin-bottom: 0.5rem;" data-i18n="intro_badge">Spiritual Introduction</span>
+            <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.5rem); margin: 0 0 0.5rem;" data-i18n="intro_title">Introduction</h2>
+            <p style="color: var(--text-muted); font-size: 1rem; margin: 0;" data-i18n="intro_subtitle">
+              Understanding the Spiritual Significance of Srila Prabhupada's Life &amp; Mission
+            </p>
+          </div>
+
+          <div class="intro-paragraphs-wrap" style="max-width: 860px; margin: 0 auto;">
+            <p data-i18n="intro_p1" class="intro-para"></p>
+            <p data-i18n="intro_p2" class="intro-para"></p>
+            <p data-i18n="intro_p3" class="intro-para"></p>
+            <p data-i18n="intro_p4" class="intro-para"></p>
+            <p data-i18n="intro_p5" class="intro-para"></p>
+            <p data-i18n="intro_p6" class="intro-para"></p>
+            <p data-i18n="intro_p7" class="intro-para intro-para-highlight" style="padding: 1.25rem 1.5rem; background: rgba(217, 119, 6, 0.08); border-left: 4px solid var(--saffron-500); border-radius: var(--radius-md); font-style: italic; color: var(--text-main); margin-bottom: 1.5rem;"></p>
+
+            <div class="source-link-box" style="margin-top: 2rem;">
+              <span class="source-icon">📖</span>
+              <div>
+                <strong data-i18n="source_label_official">Official Source Records:</strong>
+                <p style="margin: 0.2rem 0 0.5rem; font-size: 0.88rem; color: var(--text-muted);" data-i18n="source_desc_gbc">
+                  Biographical documentation verified by the ISKCON Governing Body Commission &amp; Bhaktivedanta Book Trust.
+                </p>
+                <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                  <a href="https://gbc.iskcon.org/srila-prabhupada/" target="_blank" class="source-external-link" data-i18n="link_gbc_bio">GBC Official Biography ↗</a>
+                  <a href="https://www.bbt.org/founder" target="_blank" class="source-external-link" data-i18n="link_bbt_founder">BBT Founder Record ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. THREE IMPORTANT TOPICS SECTION -->
+        <div style="text-align: center; margin-bottom: 2.25rem;">
+          <span class="badge badge-verified" style="margin-bottom: 0.4rem;" data-i18n="topics_badge">Research &amp; Purpose</span>
+          <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin: 0;" data-i18n="topics_main_title">Three Core Pillars</h2>
+          <p style="color: var(--text-muted); max-width: 680px; margin: 0.4rem auto 0;" data-i18n="topics_main_subtitle">
+            Why the biography was written, how the sources were verified, and the core purpose of this seva initiative.
+          </p>
+        </div>
+
+        <div class="card-grid home-topics-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.75rem; margin-bottom: 3.5rem;">
+          <!-- Topic 1 -->
+          <div class="glass-card topic-card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                <span class="badge badge-reflection" data-i18n="topic1_badge">Topic 1</span>
+                <span style="font-size: 1.5rem;">📜</span>
+              </div>
+              <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem; color: var(--text-main);" data-i18n="topic1_title">
+                1. Why Was the Biography Written?
+              </h3>
+              <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.65; margin-bottom: 1rem;" data-i18n="topic1_desc">
+                The life of a pure devotee is a beacon of spiritual guidance. Documenting Srila Prabhupada's extraordinary sacrifice and authentic Vedic teachings ensures future seekers receive unadulterated truth.
+              </p>
+            </div>
+            <div style="border-top: 1px solid var(--line); padding-top: 0.75rem; margin-top: auto;">
+              <span class="sans-text" style="font-size: 0.8rem; color: var(--saffron-500); font-weight: 600;" data-i18n="topic1_footer">✓ Source-Verified History</span>
+            </div>
+          </div>
+
+          <!-- Topic 2 -->
+          <div class="glass-card topic-card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                <span class="badge badge-devotee" data-i18n="topic2_badge">Topic 2</span>
+                <span style="font-size: 1.5rem;">🏛️</span>
+              </div>
+              <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem; color: var(--text-main);" data-i18n="topic2_title">
+                2. Sources of Information About His Life
+              </h3>
+              <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.65; margin-bottom: 1rem;" data-i18n="topic2_desc">
+                Grounded strictly in verified primary sources: 7,000+ recorded letters, personal interviews with disciples and contemporaries, daily journals, audio lectures, and official BBT archives.
+              </p>
+            </div>
+            <div style="border-top: 1px solid var(--line); padding-top: 0.75rem; margin-top: auto;">
+              <span class="sans-text" style="font-size: 0.8rem; color: var(--saffron-500); font-weight: 600;" data-i18n="topic2_footer">✓ 7,000+ Letters &amp; Archives</span>
+            </div>
+          </div>
+
+          <!-- Topic 3 -->
+          <div class="glass-card topic-card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                <span class="badge badge-verified" data-i18n="topic3_badge">Topic 3</span>
+                <span style="font-size: 1.5rem;">🪔</span>
+              </div>
+              <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem; color: var(--text-main);" data-i18n="topic3_title">
+                3. Purpose of This Biography
+              </h3>
+              <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.65; margin-bottom: 1rem;" data-i18n="topic3_desc">
+                To inspire readers through Srila Prabhupada's unshakeable faith in his Guru Maharaj's order, offering a transparent portal into authentic spiritual life and pure devotional service.
+              </p>
+            </div>
+            <div style="border-top: 1px solid var(--line); padding-top: 0.75rem; margin-top: auto;">
+              <span class="sans-text" style="font-size: 0.8rem; color: var(--saffron-500); font-weight: 600;" data-i18n="topic3_footer">✓ Devotional Seva Offering</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quote Showcase Box -->
+        <div class="quote-box" style="margin-bottom: 3rem;">
+          <p id="quote-text">"Books are the basis, Preaching is the mission, Utility is the principle, Purity is the force."</p>
+          <span id="quote-context" class="quote-author">— Guidance to ISKCON disciples</span>
+        </div>
+
+        <!-- Daily Prabhupada Vani Reflection Widget -->
+        <div class="glass-card" style="margin-bottom: 3rem; position: relative;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <span class="badge badge-devotee" style="margin-bottom: 0.25rem;" data-i18n="badge_daily_reflection">Daily Reflection</span>
+              <h3 id="vani-verse" style="font-size: 1.35rem; margin: 0;">Bhagavad-gita 9.22</h3>
+            </div>
+            <button id="btn-next-vani" class="btn btn-secondary" style="font-size: 0.8rem;" data-i18n="btn_new_reflection">🎲 New Reflection</button>
+          </div>
+          <p id="vani-sanskrit" style="font-style: italic; font-size: 1.05rem; color: var(--saffron-500); margin-bottom: 0.75rem;">
+            "ananyas cintayanto mam ye janah paryupasate..."
+          </p>
+          <p id="vani-translation" style="font-size: 1rem; margin-bottom: 0.75rem; color: var(--text-main);">
+            "But those who always worship Me with exclusive devotion, meditating on My transcendental form—to them I carry what they lack, and I preserve what they have."
+          </p>
+          <p id="vani-purport" style="font-size: 0.88rem; color: var(--text-muted); border-left: 3px solid var(--saffron-500); padding-left: 0.75rem; margin: 0;">
+            <strong data-i18n="purport_snippet_label">Purport Snippet:</strong> Krishna personally takes care of the devotee who is fully absorbed in devotional service.
+          </p>
+        </div>
+
+        <!-- 3. HIS JOURNEY AND LEGACY SECTION -->
+        <div style="text-align: center; margin-bottom: 2.25rem;">
+          <span class="badge badge-verified" style="margin-bottom: 0.4rem;" data-i18n="badge_milestones">Historical Milestones</span>
+          <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin: 0;" data-i18n="legacy_section_title">His Journey and Legacy</h2>
+          <p style="color: var(--text-muted); max-width: 680px; margin: 0.4rem auto 0;" data-i18n="legacy_section_subtitle">
+            An extraordinary spiritual movement that transformed millions of lives around the globe in just eleven years.
+          </p>
+        </div>
+
+        <div class="card-grid" style="margin-bottom: 3.5rem;">
+          <!-- Card 1: Spiritual Mission & Preparation -->
+          <div class="glass-card legacy-card">
+            <div>
+              <span class="badge badge-reflection" style="margin-bottom: 0.75rem;" data-i18n="legacy_card1_era">1896 – 1965</span>
+              <h3 style="font-size: 1.25rem; margin: 0 0 0.5rem;" data-i18n="legacy_card1_title">Preparation &amp; Vrindavan Years</h3>
+              <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;" data-i18n="legacy_card1_desc">
+                After meeting his Guru Maharaj in Kolkata (1922), Srila Prabhupada published <em>Back to Godhead</em> magazine and translated the first cantos of Srimad-Bhagavatam at Sri Radha-Damodara temple in Vrindavan.
+              </p>
+            </div>
+            <div class="card-footer-action">
+              <a class="sans-text" data-nav="timeline" data-i18n="link_view_early_timeline">View Early Timeline →</a>
+              <a href="https://vedabase.io/en/library/spl/" target="_blank" class="card-source-link" data-i18n="source_spl_link">Source: Lilamrta ↗</a>
+            </div>
+          </div>
+
+          <!-- Card 2: Journey to the West (1965) -->
+          <div class="glass-card legacy-card">
+            <div>
+              <span class="badge badge-devotee" style="margin-bottom: 0.75rem;" data-i18n="legacy_card2_era">1965</span>
+              <h3 style="font-size: 1.25rem; margin: 0 0 0.5rem;" data-i18n="legacy_card2_title">Jaladuta Voyage to the West</h3>
+              <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;" data-i18n="legacy_card2_desc">
+                At age 69, aboard the steamship <em>Jaladuta</em>, Srila Prabhupada endured two heart attacks during a perilous 38-day sea journey to bring Chaitanya Mahaprabhu's message to America.
+              </p>
+            </div>
+            <div class="card-footer-action">
+              <a class="sans-text" data-nav="timeline" data-i18n="link_view_jaladuta_voyage">Read Jaladuta Story →</a>
+              <a href="https://iskcon.org/history/" target="_blank" class="card-source-link" data-i18n="source_iskcon_history_link">Source: ISKCON History ↗</a>
+            </div>
+          </div>
+
+          <!-- Card 3: Founding ISKCON (1966) -->
+          <div class="glass-card legacy-card">
+            <div>
+              <span class="badge badge-verified" style="margin-bottom: 0.75rem;" data-i18n="legacy_card3_era">1966</span>
+              <h3 style="font-size: 1.25rem; margin: 0 0 0.5rem;" data-i18n="legacy_card3_title">Incorporation of ISKCON</h3>
+              <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;" data-i18n="legacy_card3_desc">
+                On July 11, 1966, Srila Prabhupada legally incorporated the International Society for Krishna Consciousness at 26 Second Avenue, New York City, launching a global spiritual movement.
+              </p>
+            </div>
+            <div class="card-footer-action">
+              <a class="sans-text" data-nav="centers" data-i18n="link_view_first_center">Explore Historic Centers →</a>
+              <a href="https://gbc.iskcon.org/srila-prabhupada/" target="_blank" class="card-source-link" data-i18n="source_gbc_link">Source: GBC Record ↗</a>
+            </div>
+          </div>
+
+          <!-- Card 4: Literary Work & World Tours (1966-1977) -->
+          <div class="glass-card legacy-card">
+            <div>
+              <span class="badge badge-devotee" style="margin-bottom: 0.75rem;" data-i18n="legacy_card4_era">1966 – 1977</span>
+              <h3 style="font-size: 1.25rem; margin: 0 0 0.5rem;" data-i18n="legacy_card4_title">Literary Masterpieces &amp; World Tours</h3>
+              <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;" data-i18n="legacy_card4_desc">
+                Completed 14 world tours, authored over 80 volume translations of scriptures including <em>Bhagavad-gita As It Is</em>, and initiated thousands of disciples into pure Bhakti.
+              </p>
+            </div>
+            <div class="card-footer-action">
+              <a class="sans-text" data-nav="books" data-i18n="link_explore_library">Browse Library →</a>
+              <a href="https://www.bbt.org/founder" target="_blank" class="card-source-link" data-i18n="source_bbt_link">Source: BBT Archives ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. EXPLORE THE TEACHINGS SECTION -->
+        <div style="text-align: center; margin-bottom: 2.25rem;">
+          <span class="badge badge-devotee" style="margin-bottom: 0.4rem;" data-i18n="badge_learning_paths">Learning Paths</span>
+          <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin: 0;" data-i18n="explore_teachings_title">Explore the Teachings</h2>
+          <p style="color: var(--text-muted); max-width: 680px; margin: 0.4rem auto 0;" data-i18n="explore_teachings_subtitle">
+            Deepen your understanding through verified scriptures, timeline records, audio lectures, and primary sources.
+          </p>
+        </div>
+
+        <div class="card-grid" style="margin-bottom: 3.5rem;">
+          <div class="glass-card path-card" onclick="showPage('timeline')" style="cursor: pointer;">
+            <span class="path-icon">📜</span>
+            <h3 style="font-size: 1.3rem; margin: 0.5rem 0 0.3rem;" data-i18n="path_timeline_title">Life Timeline</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem;" data-i18n="path_timeline_desc">A complete chronological overview from 1896 to 1977, fully cited with archival references.</p>
+            <span class="sans-text" style="color: var(--saffron-500); font-weight: 700; font-size: 0.85rem;" data-i18n="btn_view_timeline">View Timeline →</span>
+          </div>
+
+          <div class="glass-card path-card" onclick="showPage('teachings')" style="cursor: pointer;">
+            <span class="path-icon">🪔</span>
+            <h3 style="font-size: 1.3rem; margin: 0.5rem 0 0.3rem;" data-i18n="path_teachings_title">Teachings &amp; Philosophy</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem;" data-i18n="path_teachings_desc">Structured guides explaining Bhakti-yoga, Krishna consciousness, and the Holy Name.</p>
+            <span class="sans-text" style="color: var(--saffron-500); font-weight: 700; font-size: 0.85rem;" data-i18n="btn_study_teachings">Study Teachings →</span>
+          </div>
+
+          <div class="glass-card path-card" onclick="showPage('books')" style="cursor: pointer;">
+            <span class="path-icon">📚</span>
+            <h3 style="font-size: 1.3rem; margin: 0.5rem 0 0.3rem;" data-i18n="path_books_title">Books &amp; Reading Library</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem;" data-i18n="path_books_desc">Read authorized PDF literature including Bhagavad-gita As It Is with verse guides.</p>
+            <span class="sans-text" style="color: var(--saffron-500); font-weight: 700; font-size: 0.85rem;" data-i18n="path_books_btn">Read Scriptures →</span>
+          </div>
+
+          <div class="glass-card path-card" onclick="showPage('centers')" style="cursor: pointer;">
+            <span class="path-icon">🏛️</span>
+            <h3 style="font-size: 1.3rem; margin: 0.5rem 0 0.3rem;" data-i18n="path_centers_title">Global Centers</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem;" data-i18n="path_centers_desc">Explore historic spiritual sanctuaries established during Srila Prabhupada's presence.</p>
+            <span class="sans-text" style="color: var(--saffron-500); font-weight: 700; font-size: 0.85rem;" data-i18n="btn_view_centers">Explore Centers →</span>
+          </div>
+
+          <div class="glass-card path-card" onclick="showPage('sources')" style="cursor: pointer;">
+            <span class="path-icon">🔍</span>
+            <h3 style="font-size: 1.3rem; margin: 0.5rem 0 0.3rem;" data-i18n="path_sources_title">Sources Directory</h3>
+            <p style="color: var(--text-muted); font-size: 0.92rem;" data-i18n="path_sources_desc">Inspect the primary archives, Vedabase records, and institutional references used.</p>
+            <span class="sans-text" style="color: var(--saffron-500); font-weight: 700; font-size: 0.85rem;" data-i18n="btn_view_sources">Inspect Sources →</span>
+          </div>
+        </div>
+
+        <!-- 5. TRUST AND SOURCE SECTION -->
+        <div class="glass-card trust-banner-card" style="margin-bottom: 2rem;">
+          <div class="trust-banner-content">
+            <div class="trust-icon-wrap">
+              <span>📜</span>
+            </div>
+            <div>
+              <h3 style="font-size: 1.35rem; margin: 0 0 0.4rem;" data-i18n="trust_title">Grounded in Verified Sources &amp; Authentic Tradition</h3>
+              <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0 0 0.75rem; line-height: 1.6;" data-i18n="trust_body">
+                Prabhupada Seva is dedicated to presenting Srila Prabhupada's life, lilas, and teachings with complete historical accuracy and devotional reverence. Every record, quotation, and milestone is anchored to official archives and authoritative publications.
+              </p>
+              <a class="btn btn-secondary" style="font-size: 0.84rem; padding: 0.5rem 1.1rem;" data-nav="sources" data-i18n="btn_inspect_directory">Inspect Sources Directory →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TIMELINE PAGE -->
+    <section id="page-timeline" class="page-section">
+      <div class="container">
+        <div style="text-align:center;max-width:700px;margin:0 auto 2.5rem">
+          <p class="hero-eyebrow" data-i18n="timeline_eyebrow">Verified Chronology</p>
+          <h2 data-i18n="timeline_title">Srila Prabhupada's Life Timeline</h2>
+          <p style="color:var(--text-muted)" data-i18n="timeline_subtitle">Every milestone entry is linked directly to its archival source record.</p>
+        </div>
+
+        <!-- World Journey Overview Widget -->
+        <div class="glass-card" style="max-width:860px;margin:0 auto 2.5rem;text-align:center">
+          <p class="hero-eyebrow" data-i18n="legacy_eyebrow">Global Preaching Legacy</p>
+          <h3 style="font-size:1.35rem;margin-bottom:0.5rem" data-i18n="legacy_title">14 World Tours Across 6 Continents (1966–1977)</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:1rem;margin-top:1.25rem">
+            <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-md);border:1px solid var(--line)">
+              <span style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--saffron-500);display:block">108+</span>
+              <span class="sans-text" style="font-size:0.8rem;color:var(--text-muted)" data-i18n="stat_temples">Temples Founded</span>
+            </div>
+            <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-md);border:1px solid var(--line)">
+              <span style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--maroon-700);display:block">80+</span>
+              <span class="sans-text" style="font-size:0.8rem;color:var(--text-muted)" data-i18n="stat_books">Books Authored</span>
+            </div>
+            <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-md);border:1px solid var(--line)">
+              <span style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--leaf-600);display:block">5,000+</span>
+              <span class="sans-text" style="font-size:0.8rem;color:var(--text-muted)" data-i18n="stat_disciples">Disciples Initiated</span>
+            </div>
+            <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-md);border:1px solid var(--line)">
+              <span style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--saffron-500);display:block">14</span>
+              <span class="sans-text" style="font-size:0.8rem;color:var(--text-muted)" data-i18n="stat_circuits">Global Circuits</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="timeline-filters" class="timeline-controls">
+          <button class="filter-btn active" data-era="all" data-i18n="filter_all_eras">All Eras</button>
+          <button class="filter-btn" data-era="early" data-i18n="filter_early">1896-1922 Early Life</button>
+          <button class="filter-btn" data-era="preparation" data-i18n="filter_preparation">1922-1965 Preparation</button>
+          <button class="filter-btn" data-era="jaladuta" data-i18n="filter_jaladuta">1965 Jaladuta</button>
+          <button class="filter-btn" data-era="west" data-i18n="filter_west">1966 West Arrival</button>
+          <button class="filter-btn" data-era="expansion" data-i18n="filter_expansion">1966-1977 ISKCON Expansion</button>
+        </div>
+
+        <div id="timeline-container" class="timeline-list">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TEACHINGS PAGE -->
+    <section id="page-teachings" class="page-section">
+      <div class="container">
+        <div style="text-align:center;max-width:700px;margin:0 auto 2.5rem">
+          <p class="hero-eyebrow" data-i18n="teachings_eyebrow">Guided Learning</p>
+          <h2 data-i18n="teachings_title">Teachings &amp; Philosophy</h2>
+          <p style="color:var(--text-muted)" data-i18n="teachings_subtitle">Clear, structured paths into Krishna consciousness grounded in sacred literature.</p>
+        </div>
+
+        <div id="teachings-container" class="card-grid" style="margin-bottom:3rem">
+          <!-- Dynamically populated by app.js -->
+        </div>
+
+        <!-- Devotional Knowledge Check Quiz -->
+        <div class="quiz-card" style="max-width:760px;margin:0 auto">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <h3 style="font-size:1.3rem;margin:0" data-i18n="quiz_title">🧠 Test Your Knowledge</h3>
+            <span class="badge badge-devotee" data-i18n="badge_interactive_quiz">Interactive Quiz</span>
+          </div>
+          <div id="quiz-container">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LILAS PAGE -->
+    <section id="page-lilas" class="page-section">
+      <div class="container">
+        <div style="text-align:center;max-width:700px;margin:0 auto 2.5rem">
+          <p class="hero-eyebrow" data-i18n="lilas_eyebrow">Attributed Accounts</p>
+          <h2 data-i18n="lilas_title">Lilas &amp; Remembrances</h2>
+          <p style="color:var(--text-muted)" data-i18n="lilas_subtitle">Stories are handled with reverence, specifying narrator, source volume, and exact status.</p>
+        </div>
+
+        <div id="lilas-filters" class="timeline-controls">
+          <button class="filter-btn active" data-category="all" data-i18n="filter_all_lilas">All Lilas</button>
+          <button class="filter-btn" data-category="preparation" data-i18n="filter_vrindavan">Vrindavan Years</button>
+          <button class="filter-btn" data-category="jaladuta" data-i18n="filter_jaladuta_voyage">Jaladuta Voyage</button>
+          <button class="filter-btn" data-category="west" data-i18n="filter_western_preaching">Western Preaching</button>
+        </div>
+
+        <div id="lilas-container" class="card-grid">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKS PAGE -->
+    <section id="page-books" class="page-section">
+      <div class="container">
+        <div style="text-align:center;max-width:700px;margin:0 auto 2rem">
+          <p class="hero-eyebrow" data-i18n="books_eyebrow">Sacred Literature</p>
+          <h2 data-i18n="books_title">Authorized Literature Library</h2>
+          <p style="color:var(--text-muted)" data-i18n="books_subtitle">Read authentic translations and purports by Srila Prabhupada published by the Bhaktivedanta Book Trust.</p>
+        </div>
+
+        <!-- Dedicated Library Search Bar -->
+        <div class="library-search-container">
+          <div class="library-search-box">
+            <span class="library-search-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </span>
+            <input type="text" id="library-search-input" class="library-search-input" placeholder="Search books by title, author, category..." data-i18n="library_search_placeholder" autocomplete="off" spellcheck="false" role="searchbox" />
+            <button id="library-search-clear" class="library-search-clear" style="display:none" aria-label="Clear search" title="Clear query">✕</button>
+          </div>
+        </div>
+
+        <div id="books-container" class="card-grid" style="grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:2rem;max-width:960px;margin:0 auto 3.5rem">
+          <!-- Dynamically populated by app.js -->
+        </div>
+
+        <!-- Interactive Bhagavad-gita 18 Chapter Explorer -->
+        <div class="glass-card" style="max-width:960px;margin:0 auto">
+          <p class="hero-eyebrow" data-i18n="gita_overview_eyebrow">Interactive Scripture Guide</p>
+          <h3 style="font-size:1.5rem" data-i18n="gita_overview_title">Bhagavad-gita As It Is — 18 Chapters Overview</h3>
+          <p style="color:var(--text-muted)" data-i18n="gita_overview_subtitle">Select any chapter to explore its summary and number of verses.</p>
+
+          <div id="gita-chapter-buttons" class="chapter-grid">
+            <!-- Dynamically populated by app.js -->
+          </div>
+
+          <div id="gita-chapter-detail" style="margin-top:1.5rem;padding:1.25rem;background:var(--bg-main);border:1px solid var(--line);border-radius:var(--radius-md)">
+            <!-- Chapter detail rendered by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GLOBAL CENTERS PAGE -->
+    <section id="page-centers" class="page-section">
+      <div class="container">
+        <div style="text-align:center;max-width:700px;margin:0 auto 2.5rem">
+          <p class="hero-eyebrow" data-i18n="centers_eyebrow">Spiritual Sanctuaries</p>
+          <h2 data-i18n="centers_title">Historic ISKCON Centers Worldwide</h2>
+          <p style="color:var(--text-muted)" data-i18n="centers_subtitle">Explore the global spiritual sanctuaries established under Srila Prabhupada's direct guidance.</p>
+        </div>
+
+        <div id="centers-filters" class="timeline-controls">
+          <button class="filter-btn active" data-region="all" data-i18n="filter_all_regions">All Regions</button>
+          <button class="filter-btn" data-region="India" data-i18n="filter_india">India</button>
+          <button class="filter-btn" data-region="Americas" data-i18n="filter_americas">Americas</button>
+          <button class="filter-btn" data-region="Europe" data-i18n="filter_europe">Europe</button>
+        </div>
+
+        <div id="centers-container" class="card-grid">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SOURCES PAGE -->
+    <section id="page-sources" class="page-section">
+      <div class="container">
+        <div style="text-align:center;max-width:700px;margin:0 auto 2.5rem">
+          <p class="hero-eyebrow" data-i18n="sources_eyebrow">Transparency First</p>
+          <h2 data-i18n="sources_title">Source Verification Directory</h2>
+          <p style="color:var(--text-muted)" data-i18n="sources_subtitle">We do not publish unverified claims. Inspect the underlying archives used across the site.</p>
+        </div>
+
+        <div id="sources-container" style="display:flex;flex-direction:column;gap:1rem;max-width:800px;margin:0 auto">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH PORTAL PAGE -->
+    <section id="page-research" class="page-section">
+      <div class="container">
+        <div style="text-align:center;max-width:700px;margin:0 auto 2rem">
+          <p class="hero-eyebrow" data-i18n="research_eyebrow">Editor Workflow</p>
+          <h2 data-i18n="research_title">Research Submission &amp; Database Admin Portal</h2>
+          <p style="color:var(--text-muted)" data-i18n="research_subtitle">Standardized form for Tanvi &amp; Aayush to submit new records into the database with live Supabase synchronization.</p>
+        </div>
+
+        <!-- Supabase Connection Config Card -->
+        <div class="glass-card" style="max-width:800px;margin:0 auto 2rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem">
+            <h3 style="font-size:1.2rem;margin:0" data-i18n="sb_card_title">⚡ Supabase Database Connection</h3>
+            <span id="supabase-status-badge" class="badge badge-reflection" data-i18n="sb_status_disconnected">Disconnected (Using Local Dataset)</span>
+          </div>
+
+          <form id="supabase-config-form" class="form-grid">
+            <div class="form-group">
+              <label for="sb-url" data-i18n="sb_url_label">Supabase Project URL</label>
+              <input type="url" id="sb-url" class="form-control" placeholder="https://your-project.supabase.co" />
+            </div>
+            <div class="form-group">
+              <label for="sb-key" data-i18n="sb_key_label">Supabase Anon API Key</label>
+              <input type="password" id="sb-key" class="form-control" placeholder="eyJhbGciOi..." />
+            </div>
+            <div class="form-group full" style="display:flex;gap:0.75rem">
+              <button type="submit" class="btn btn-secondary" style="font-size:0.85rem" data-i18n="btn_connect_sb">Connect Supabase Live DB</button>
+              <a href="schema.sql" target="_blank" class="btn btn-secondary" style="font-size:0.85rem" data-i18n="btn_view_schema">View PostgreSQL Schema SQL ↗</a>
+            </div>
+          </form>
+        </div>
+
+        <!-- Research Export & Data Backup Card -->
+        <div class="glass-card" style="max-width:800px;margin:0 auto 2rem">
+          <h3 style="font-size:1.2rem;margin-bottom:0.5rem" data-i18n="backup_title">📥 Research Backup &amp; Citation Tools</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem" data-i18n="backup_subtitle">Export your research submissions, backup the local JSON database, or print clean citation sheets.</p>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+            <button id="btn-export-json" class="btn btn-secondary" style="font-size:0.85rem" data-i18n="btn_export_json">Export Dataset (.JSON)</button>
+            <button id="btn-print-citations" class="btn btn-secondary" style="font-size:0.85rem" data-i18n="btn_print_citations">Print Citation Sheet 🖨️</button>
+          </div>
+        </div>
+
+        <!-- Add Custom Book PDF & Cover Card -->
+        <div class="glass-card" style="max-width:800px;margin:0 auto 2rem">
+          <h3 style="font-size:1.2rem;margin-bottom:0.5rem" data-i18n="add_book_title">📚 Add New Book (PDF &amp; Cover Image)</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem" data-i18n="add_book_subtitle">Add your own book with cover image URL and PDF download / reading link to display in the Library.</p>
+          <form id="book-submission-form" class="form-grid">
+            <div class="form-group">
+              <label for="book-title">Book Title</label>
+              <input type="text" id="book-title" name="title" class="form-control" placeholder="e.g. Bhagavad-gita As It Is" required />
+            </div>
+            <div class="form-group">
+              <label for="book-author">Author</label>
+              <input type="text" id="book-author" name="author" class="form-control" value="A.C. Bhaktivedanta Swami Prabhupada" required />
+            </div>
+            <div class="form-group">
+              <label for="book-category">Category</label>
+              <input type="text" id="book-category" name="category" class="form-control" placeholder="e.g. Foundational Text" required />
+            </div>
+            <div class="form-group">
+              <label for="book-coverUrl">Cover Image URL / Path</label>
+              <input type="text" id="book-coverUrl" name="coverUrl" class="form-control" placeholder="e.g. https://... or assets/books/gita.jpg" required />
+            </div>
+            <div class="form-group full">
+              <label for="book-pdfUrl">PDF Download / Reading URL</label>
+              <input type="text" id="book-pdfUrl" name="pdfUrl" class="form-control" placeholder="e.g. https://... or assets/books/gita.pdf" required />
+            </div>
+            <div class="form-group full">
+              <label for="book-summary">Book Summary</label>
+              <textarea id="book-summary" name="summary" rows="2" class="form-control" placeholder="Brief overview of the book..." required></textarea>
+            </div>
+            <div class="form-group full">
+              <button type="submit" class="btn btn-saffron" style="width:100%;justify-content:center">Add Book to Library</button>
+            </div>
+          </form>
+          <div id="book-submission-output" style="display:none;margin-top:1rem"></div>
+        </div>
+
+        <div class="glass-card" style="max-width:800px;margin:0 auto">
+          <form id="research-submission-form" class="form-grid">
+            <div class="form-group full">
+              <label for="form-title">Story / Event Title</label>
+              <input type="text" id="form-title" name="title" class="form-control" placeholder="e.g. Kirtan at Tompkins Square Park" required />
+            </div>
+
+            <div class="form-group">
+              <label for="form-period">Time Period / Location</label>
+              <input type="text" id="form-period" name="period" class="form-control" placeholder="e.g. 1966 - New York" required />
+            </div>
+
+            <div class="form-group">
+              <label for="form-category">Category Era</label>
+              <select id="form-category" name="category" class="form-control">
+                <option value="west">Western Preaching</option>
+                <option value="preparation">Vrindavan Preparation</option>
+                <option value="jaladuta">Jaladuta Voyage</option>
+                <option value="early">Early Life</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="form-contentType">Content Type</label>
+              <select id="form-contentType" name="contentType" class="form-control">
+                <option value="devotee-account">Devotee Account / Remembrance</option>
+                <option value="historical-fact">Historical Fact</option>
+                <option value="reflection">Reflection / Lesson</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="form-status">Review Status</label>
+              <select id="form-status" name="status" class="form-control">
+                <option value="draft">Draft (Needs Review)</option>
+                <option value="verified">Verified (Ready to Publish)</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="form-summary">Short Summary (1-2 sentences)</label>
+              <input type="text" id="form-summary" name="summary" class="form-control" placeholder="Brief summary of the record" required />
+            </div>
+
+            <div class="form-group full">
+              <label for="form-fullStory">Full Story / Account Body</label>
+              <textarea id="form-fullStory" name="fullStory" rows="4" class="form-control" placeholder="Detailed account text..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="form-sourceTitle">Source Title / Book Name</label>
+              <input type="text" id="form-sourceTitle" name="sourceTitle" class="form-control" placeholder="e.g. Srila Prabhupada-lilamrta" required />
+            </div>
+
+            <div class="form-group">
+              <label for="form-sourceAuthor">Author / Speaker</label>
+              <input type="text" id="form-sourceAuthor" name="sourceAuthor" class="form-control" placeholder="e.g. Satsvarupa dasa Goswami" required />
+            </div>
+
+            <div class="form-group full">
+              <label for="form-reflection">Lesson / Reflection (Optional)</label>
+              <input type="text" id="form-reflection" name="reflection" class="form-control" placeholder="Key lesson from this account" />
+            </div>
+
+            <div class="form-group full" style="margin-top:1rem">
+              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Submit Record for Local / Supabase Sync</button>
+            </div>
+          </form>
+
+          <div id="submission-output" style="display:none"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT PAGE -->
+    <section id="page-about" class="page-section">
+      <div class="container" style="max-width:960px">
+        <!-- Section Header -->
+        <div style="text-align:center;margin-bottom:3rem">
+          <p class="hero-eyebrow" data-i18n="about_eyebrow">ABOUT THIS INITIATIVE</p>
+          <h2 style="font-size:2.2rem;margin:0.5rem 0 1rem;font-family:'Cinzel',serif" data-i18n="about_title">Preserving &amp; Sharing a Transcendent Legacy</h2>
+          <p style="font-size:1.1rem;color:var(--text-muted);max-width:820px;margin:0 auto;line-height:1.7" data-i18n="about_intro">
+            His Divine Grace A.C. Bhaktivedanta Swami Prabhupada carried the eternal wisdom of Vedic culture across the globe, translating over 80 volumes of sacred scriptures and founding a worldwide spiritual movement. Prabhupada Seva is a dedicated digital learning resource created to organize, preserve, and present his extraordinary life, profound books, lectures, conversations, and historical memoirs in an accessible, respectful, and structured format.
+          </p>
+        </div>
+
+        <!-- 5 Meaningful Pillars Grid -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.5rem;margin-bottom:2.5rem">
+          <!-- Pillar 1 -->
+          <div class="glass-card" style="padding:1.75rem;border-top:4px solid var(--saffron-500);display:flex;flex-direction:column">
+            <div style="font-size:1.6rem;margin-bottom:0.75rem">🌐</div>
+            <h3 style="font-size:1.2rem;margin-bottom:0.6rem;font-family:'Cinzel',serif" data-i18n="about_p1_title">Why This Digital Resource Exists</h3>
+            <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.6;margin:0" data-i18n="about_p1_desc">In an era of fragmented online information, spiritual seekers require a reliable, unified space. This platform serves as a focused repository where Srila Prabhupada's authentic message can be studied with clarity, reverent presentation, and deep contextual understanding.</p>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="glass-card" style="padding:1.75rem;border-top:4px solid var(--saffron-500);display:flex;flex-direction:column">
+            <div style="font-size:1.6rem;margin-bottom:0.75rem">📜</div>
+            <h3 style="font-size:1.2rem;margin-bottom:0.6rem;font-family:'Cinzel',serif" data-i18n="about_p2_title">Preserving Life &amp; Teachings</h3>
+            <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.6;margin:0" data-i18n="about_p2_desc">We systematically present his monumental translation works—such as Bhagavad-gītā As It Is and Śrīmad-Bhāgavatam—alongside documented historical timelines, audio recordings, letters, direct conversations, and authentic memoirs of his global sankirtana mission.</p>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="glass-card" style="padding:1.75rem;border-top:4px solid var(--saffron-500);display:flex;flex-direction:column">
+            <div style="font-size:1.6rem;margin-bottom:0.75rem">📖</div>
+            <h3 style="font-size:1.2rem;margin-bottom:0.6rem;font-family:'Cinzel',serif" data-i18n="about_p3_title">What Visitors Can Discover</h3>
+            <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.6;margin:0" data-i18n="about_p3_desc">Visitors can explore the profound philosophy of Gaudiya Vaishnavism, study authentic PDF literature, examine key historical milestones, listen to devotional sound vibrations, and receive practical spiritual guidance for daily life.</p>
+          </div>
+
+          <!-- Pillar 4 -->
+          <div class="glass-card" style="padding:1.75rem;border-top:4px solid var(--saffron-500);display:flex;flex-direction:column">
+            <div style="font-size:1.6rem;margin-bottom:0.75rem">🌱</div>
+            <h3 style="font-size:1.2rem;margin-bottom:0.6rem;font-family:'Cinzel',serif" data-i18n="about_p4_title">Serving Every Level of Inquiry</h3>
+            <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.6;margin:0" data-i18n="about_p4_desc">Designed thoughtfully for practicing devotees deepening their sadhana, academic researchers studying Vedic philosophy, students of world religions, and curious newcomers seeking genuine spiritual direction.</p>
+          </div>
+        </div>
+
+        <!-- Pillar 5 (Full width / featured panel) -->
+        <div class="glass-card" style="padding:2rem;border-left:4px solid var(--leaf-600);margin-bottom:2.5rem">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
+            <span style="font-size:1.6rem">🛡️</span>
+            <h3 style="font-size:1.3rem;margin:0;font-family:'Cinzel',serif" data-i18n="about_p5_title">Fidelity to Authentic Sources</h3>
+          </div>
+          <p style="color:var(--text-muted);font-size:1rem;line-height:1.65;margin:0" data-i18n="about_p5_desc">Every record, timeline event, and reference is carefully grounded in primary source materials—Srila Prabhupada's original books, lectures, correspondence, and verified historical archives—ensuring maximum historical accuracy and spiritual integrity.</p>
+        </div>
+
+        <!-- Devotional Quote Banner -->
+        <div class="glass-card" style="text-align:center;padding:2.25rem 1.75rem;background:var(--bg-subtle);border:1px solid var(--line-strong);border-radius:var(--radius-lg)">
+          <p style="font-family:'Lora',serif;font-style:italic;font-size:1.2rem;color:var(--maroon-700);margin:0 0 0.6rem" data-i18n="about_quote">"My books are the basis, preaching is the essence, utility is the principle, and purity is the force."</p>
+          <span style="font-size:0.9rem;color:var(--text-muted);font-weight:600" data-i18n="about_quote_author">— His Divine Grace A.C. Bhaktivedanta Swami Prabhupada</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>
+        <p style="margin:0;font-family:'Cinzel',serif;font-weight:700;font-size:1.1rem" data-i18n="footer_title">Prabhupada Seva</p>
+        <p style="margin:0.2rem 0 0;font-size:0.85rem;opacity:0.8" data-i18n="footer_subtitle">A digital learning project by Tanvi &amp; Aayush</p>
+      </div>
+      <div class="footer-nav">
+        <a data-nav="home" data-i18n="nav_home">Home</a>
+        <a data-nav="timeline" data-i18n="nav_timeline">Leela</a>
+        <a data-nav="teachings" data-i18n="nav_teachings">Teachings</a>
+        <a data-nav="sources" data-i18n="nav_sources">Sources</a>
+        <a data-nav="about" data-i18n="nav_about">About</a>
       </div>
     </div>
-  </div>
+  </footer>
 
-  <!-- ISKCON HISTORY -->
-  <div class="page" id="page-iskcon-history">
-    <div class="page-main">
-      <p class="eyebrow">Institutional history</p>
-      <h1>How ISKCON Started</h1>
-      <p class="lead">A source-linked guide to the beginning and worldwide growth of the International Society for Krishna Consciousness.</p>
-      <section class="notice">
-        <h2>Research status</h2>
-        <p>The detailed article will be developed from verified sources. The starter timeline on the home page already links to official ISKCON and GBC source pages.</p>
-        <a class="button secondary" href="https://iskcon.org/history/" target="_blank" rel="noreferrer">Read official ISKCON history ↗</a>
-      </section>
+  <!-- Audio Player Bar -->
+  <div id="audio-player" class="audio-player-bar">
+    <button id="audio-play-btn" class="btn-play" aria-label="Play audio">▶</button>
+    <div class="audio-info">
+      <span id="audio-track-title" class="audio-title" data-i18n="audio_track_title">Maha Mantra</span>
+      <span id="audio-track-sub" class="audio-subtitle" data-i18n="audio_track_sub">Srila Prabhupada</span>
     </div>
+    <audio id="audio-element" src="assets/audio/maha-mantra.mp3" preload="metadata"></audio>
   </div>
 
-  <!-- SOURCES -->
-  <div class="page" id="page-sources">
-    <div class="page-main">
-      <p class="eyebrow">Transparency first</p>
-      <h1>Sources &amp; Review</h1>
-      <p class="lead">Every claim on this site should be traceable to a source. Here is the starter list used for the current timeline.</p>
-      <div id="sources-list" class="sources-list"></div>
-      <p class="source-notice">If sources disagree, this project will show the difference and hold the wording for review. We will not publish unsupported claims.</p>
-    </div>
-  </div>
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/gita-data.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js"></script>
 
-</main>
-
-<footer>
-  <p>Prabhupada Seva · A learning project by Aayush &amp; Tanvi</p>
-  <div class="footer-links">
-    <a data-nav="about">About</a>
-    <a data-nav="sources">Sources</a>
-    <span style="opacity:.6">Respectful · Educational · Source-led</span>
-  </div>
-</footer>
-
-<script>
-const sources = [
-  { id: "gbc-biography", name: "Biography of Srila Prabhupada", publisher: "ISKCON Governing Body Commission", url: "https://gbc.iskcon.org/srila-prabhupada/", type: "Official institutional biography" },
-  { id: "iskcon-history", name: "History of ISKCON", publisher: "ISKCON", url: "https://iskcon.org/history/", type: "Official institutional history" }
-];
-
-const timeline = [
-  { year: "1896", title: "Birth in Calcutta", text: "The GBC biography records his birth as Abhay Charan De on September 1, 1896, in Calcutta.", source: "gbc-biography" },
-  { year: "1922", title: "Meeting Srila Bhaktisiddhanta Sarasvati", text: "The GBC biography describes this meeting as deeply influential on Abhay's future calling.", source: "gbc-biography" },
-  { year: "1965", title: "Journey to the United States", text: "Official ISKCON and GBC pages record his journey west aboard the Jaladuta in 1965.", source: "iskcon-history" },
-  { year: "1966", title: "Foundation of ISKCON", text: "The GBC biography records the official registration of ISKCON in New York on July 11, 1966.", source: "gbc-biography" }
-];
-
-const sourceById = Object.fromEntries(sources.map((s) => [s.id, s]));
-
-function renderTimeline(){
-  const el = document.querySelector("#timeline");
-  if(!el) return;
-  el.innerHTML = timeline.map((item) => {
-    const source = sourceById[item.source];
-    return `<li class="timeline-item"><p class="year">${item.year}</p><div><h3>${item.title}</h3><p>${item.text}</p><a href="${source.url}" target="_blank" rel="noreferrer">View source ↗</a></div></li>`;
-  }).join("");
-}
-
-function renderSources(){
-  const el = document.querySelector("#sources-list");
-  if(!el) return;
-  el.innerHTML = sources.map((s) => `<article class="source-record"><div><h3>${s.name}</h3><p>${s.publisher} · ${s.type}</p></div><a class="button secondary small" href="${s.url}" target="_blank" rel="noreferrer">Open source ↗</a></article>`).join("");
-}
-
-renderTimeline();
-renderSources();
-
-// mobile menu
-const menuButton = document.querySelector(".menu-button");
-const navigation = document.querySelector(".main-nav");
-menuButton.addEventListener("click", () => {
-  const open = menuButton.getAttribute("aria-expanded") === "true";
-  menuButton.setAttribute("aria-expanded", String(!open));
-  navigation.classList.toggle("open", !open);
-});
-
-// simple SPA routing between pages
-const pageIds = ["home","about","teachings","lilas","books","iskcon-history","sources"];
-function showPage(name){
-  if(!pageIds.includes(name)) name = "home";
-  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
-  const target = document.querySelector("#page-" + name);
-  if(target) target.classList.add("active");
-  document.querySelectorAll(".main-nav a[data-nav]").forEach((a) => {
-    a.classList.toggle("active", a.getAttribute("data-nav") === name);
-  });
-  window.scrollTo(0,0);
-  navigation.classList.remove("open");
-  menuButton.setAttribute("aria-expanded","false");
-}
-
-document.querySelectorAll("[data-nav]").forEach((el) => {
-  el.addEventListener("click", () => {
-    const name = el.getAttribute("data-nav");
-    history.replaceState(null, "", "#" + name);
-    showPage(name);
-  });
-});
-
-document.querySelectorAll("[data-scroll]").forEach((el) => {
-  el.addEventListener("click", () => {
-    const id = el.getAttribute("data-scroll");
-    const target = document.getElementById(id);
-    if(target) target.scrollIntoView({ behavior: "smooth" });
-  });
-});
-
-// initial route
-const initial = (location.hash || "").replace("#","");
-showPage(initial || "home");
-</script>
 </body>
 </html>
