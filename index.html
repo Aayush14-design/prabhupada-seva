@@ -80,7 +80,7 @@
           <!-- Visually Centered Portrait Frame -->
           <div class="centered-portrait-wrap">
             <div class="centered-portrait-frame">
-              <img src="images/srila-prabhupad.jpg" alt="His Divine Grace A.C. Bhaktivedanta Swami Prabhupada" class="centered-portrait-img" loading="eager" />
+              <img src="images/prabhupadji-homepage.jpeg" alt="His Divine Grace A.C. Bhaktivedanta Swami Prabhupada" class="centered-portrait-img" loading="eager" />
             </div>
             <div class="centered-portrait-caption">
               <span class="caption-title" data-i18n="portrait_title">His Divine Grace</span>
@@ -367,49 +367,57 @@
       </div>
     </section>
 
-    <!-- TIMELINE PAGE -->
+    <!-- LEELA / TIMELINE PAGE -->
     <section id="page-timeline" class="page-section">
       <div class="container">
-        <div style="text-align:center;max-width:700px;margin:0 auto 2.5rem">
-          <p class="hero-eyebrow" data-i18n="timeline_eyebrow">Verified Chronology</p>
-          <h2 data-i18n="timeline_title">Srila Prabhupada's Life Timeline</h2>
-          <p style="color:var(--text-muted)" data-i18n="timeline_subtitle">Every milestone entry is linked directly to its archival source record.</p>
+        <!-- Main Page Header -->
+        <div style="text-align:center;max-width:800px;margin:0 auto 2.5rem">
+          <span class="hero-eyebrow" data-i18n="timeline_eyebrow">✦ श्रील प्रभुपाद जीवन-लीला (Authentic Life Biography)</span>
+          <h2 style="font-size:clamp(2rem, 4vw, 2.75rem);margin:0.25rem 0 0.5rem" data-i18n="timeline_title">
+            श्रील प्रभुपाद <span class="highlight-saffron">दिव्य लीला</span>
+          </h2>
+          <p style="color:var(--text-muted);font-size:1.05rem;margin:0" data-i18n="timeline_subtitle">
+            प्रमाणित स्रोतों एवं ऐतिहासिक अभिलेखों पर आधारित जीवन की कालानुक्रमिक गाथा
+          </p>
         </div>
 
-        <!-- World Journey Overview Widget -->
-        <div class="glass-card" style="max-width:860px;margin:0 auto 2.5rem;text-align:center">
-          <p class="hero-eyebrow" data-i18n="legacy_eyebrow">Global Preaching Legacy</p>
-          <h3 style="font-size:1.35rem;margin-bottom:0.5rem" data-i18n="legacy_title">14 World Tours Across 6 Continents (1966–1977)</h3>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:1rem;margin-top:1.25rem">
-            <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-md);border:1px solid var(--line)">
-              <span style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--saffron-500);display:block">108+</span>
-              <span class="sans-text" style="font-size:0.8rem;color:var(--text-muted)" data-i18n="stat_temples">Temples Founded</span>
+        <!-- 1. Leela Selector Grid (Future Expandability Bar) -->
+        <div class="leela-selector-wrap" style="margin-bottom: 2.5rem;">
+          <div class="leela-selector-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <h3 style="font-size:1.15rem;margin:0;font-family:'Cinzel',serif;color:var(--text-main)" data-i18n="leela_phases_title">
+              📜 जीवन लीला चरण (Life Phases)
+            </h3>
+            <span class="badge badge-devotee" data-i18n="leela_expandable_badge">भविष्य विस्तार योग्य</span>
+          </div>
+
+          <div id="leela-selector-container" class="leela-selector-grid">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+
+        <!-- 2. Active Leela Banner & Controls -->
+        <div id="active-leela-banner" class="glass-card leela-hero-card" style="margin-bottom: 2.5rem; position: relative; overflow: hidden; padding: 2rem;">
+          <!-- Dynamically populated by app.js -->
+        </div>
+
+        <!-- 3. Chapter Search & Quick Navigation -->
+        <div class="leela-controls-bar" style="margin-bottom: 2rem;">
+          <div style="display:flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <!-- Chapter Quick Nav Pills -->
+            <div id="chapter-nav-pills" class="chapter-nav-wrap">
+              <!-- Dynamically populated by app.js -->
             </div>
-            <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-md);border:1px solid var(--line)">
-              <span style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--maroon-700);display:block">80+</span>
-              <span class="sans-text" style="font-size:0.8rem;color:var(--text-muted)" data-i18n="stat_books">Books Authored</span>
-            </div>
-            <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-md);border:1px solid var(--line)">
-              <span style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--leaf-600);display:block">5,000+</span>
-              <span class="sans-text" style="font-size:0.8rem;color:var(--text-muted)" data-i18n="stat_disciples">Disciples Initiated</span>
-            </div>
-            <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-md);border:1px solid var(--line)">
-              <span style="font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--saffron-500);display:block">14</span>
-              <span class="sans-text" style="font-size:0.8rem;color:var(--text-muted)" data-i18n="stat_circuits">Global Circuits</span>
+
+            <!-- Chapter Search -->
+            <div class="leela-search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="leela-search-input" class="leela-search-input" placeholder="लीला में खोजें (उदा. स्कॉटिश, गौर मोहन, रथयात्रा)..." aria-label="Search within Leela" />
             </div>
           </div>
         </div>
 
-        <div id="timeline-filters" class="timeline-controls">
-          <button class="filter-btn active" data-era="all" data-i18n="filter_all_eras">All Eras</button>
-          <button class="filter-btn" data-era="early" data-i18n="filter_early">1896-1922 Early Life</button>
-          <button class="filter-btn" data-era="preparation" data-i18n="filter_preparation">1922-1965 Preparation</button>
-          <button class="filter-btn" data-era="jaladuta" data-i18n="filter_jaladuta">1965 Jaladuta</button>
-          <button class="filter-btn" data-era="west" data-i18n="filter_west">1966 West Arrival</button>
-          <button class="filter-btn" data-era="expansion" data-i18n="filter_expansion">1966-1977 ISKCON Expansion</button>
-        </div>
-
-        <div id="timeline-container" class="timeline-list">
+        <!-- 4. Chronological Chapters Container -->
+        <div id="leela-chapters-container" class="leela-chapters-list">
           <!-- Dynamically populated by app.js -->
         </div>
       </div>
@@ -441,24 +449,11 @@
       </div>
     </section>
 
-    <!-- LILAS PAGE -->
+    <!-- LILAS PAGE (ALIAS / MIRROR) -->
     <section id="page-lilas" class="page-section">
       <div class="container">
-        <div style="text-align:center;max-width:700px;margin:0 auto 2.5rem">
-          <p class="hero-eyebrow" data-i18n="lilas_eyebrow">Attributed Accounts</p>
-          <h2 data-i18n="lilas_title">Lilas &amp; Remembrances</h2>
-          <p style="color:var(--text-muted)" data-i18n="lilas_subtitle">Stories are handled with reverence, specifying narrator, source volume, and exact status.</p>
-        </div>
-
-        <div id="lilas-filters" class="timeline-controls">
-          <button class="filter-btn active" data-category="all" data-i18n="filter_all_lilas">All Lilas</button>
-          <button class="filter-btn" data-category="preparation" data-i18n="filter_vrindavan">Vrindavan Years</button>
-          <button class="filter-btn" data-category="jaladuta" data-i18n="filter_jaladuta_voyage">Jaladuta Voyage</button>
-          <button class="filter-btn" data-category="west" data-i18n="filter_western_preaching">Western Preaching</button>
-        </div>
-
-        <div id="lilas-container" class="card-grid">
-          <!-- Dynamically populated by app.js -->
+        <div id="page-lilas-content">
+          <!-- Dynamically rendered by app.js -->
         </div>
       </div>
     </section>
@@ -466,10 +461,13 @@
     <!-- BOOKS PAGE -->
     <section id="page-books" class="page-section">
       <div class="container">
-        <div style="text-align:center;max-width:700px;margin:0 auto 2rem">
+        <div style="text-align:center;max-width:780px;margin:0 auto 2.5rem">
           <p class="hero-eyebrow" data-i18n="books_eyebrow">Sacred Literature</p>
-          <h2 data-i18n="books_title">Authorized Literature Library</h2>
-          <p style="color:var(--text-muted)" data-i18n="books_subtitle">Read authentic translations and purports by Srila Prabhupada published by the Bhaktivedanta Book Trust.</p>
+          <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.5rem">
+            <h2 style="margin:0" data-i18n="books_title">Authorized Literature Library</h2>
+            <span id="library-book-count" class="book-count-pill"></span>
+          </div>
+          <p style="color:var(--text-muted);margin:0" data-i18n="books_subtitle">Read authentic translations and purports by Srila Prabhupada published by the Bhaktivedanta Book Trust.</p>
         </div>
 
         <!-- Dedicated Library Search Bar -->
@@ -486,7 +484,7 @@
           </div>
         </div>
 
-        <div id="books-container" class="card-grid" style="grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:2rem;max-width:960px;margin:0 auto 3.5rem">
+        <div id="books-container" class="proposed-books-grid">
           <!-- Dynamically populated by app.js -->
         </div>
 

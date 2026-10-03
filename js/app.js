@@ -187,96 +187,221 @@ function showPage(pageId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* Render Timeline */
+/* Render Modular Expandable Leela System */
+let currentActiveLeelaId = null; // Default unselected so content only reveals on click
+let currentLeelaSearch = '';
+
 function initTimeline() {
-  const container = document.getElementById('timeline-container');
-  const filterBtns = document.querySelectorAll('#timeline-filters button');
+  renderLeelaView();
+}
 
-  if (!container) return;
+function initLilas() {
+  renderLeelaView();
+}
 
-  function render(era = 'all') {
-    const rawItems = dataManager.getTimeline(era);
-    if (rawItems.length === 0) {
-      container.innerHTML = '<p class="sans-text" style="color:var(--text-muted)">No timeline items found for this filter.</p>';
-      return;
-    }
+function renderLeelaView() {
+  const selectorContainer = document.getElementById('leela-selector-container');
+  const bannerContainer = document.getElementById('active-leela-banner');
+  const chapterPillsContainer = document.getElementById('chapter-nav-pills');
+  const chaptersContainer = document.getElementById('leela-chapters-container');
+  const searchInput = document.getElementById('leela-search-input');
+  const controlsBar = document.querySelector('.leela-controls-bar');
 
-    const items = rawItems.map(item => i18n.getContentTimeline(item));
+  if (!selectorContainer || !chaptersContainer) return;
 
-    container.innerHTML = items.map(item => `
-      <div class="timeline-item">
-        <div class="timeline-year">${item.year}</div>
-        <div class="timeline-card">
-          <h3 style="margin-bottom:0.4rem;font-size:1.25rem">${item.title}</h3>
-          <p style="color:var(--text-muted);font-size:0.95rem;margin-bottom:0.75rem">${item.summary}</p>
-          <p style="font-size:0.9rem;line-height:1.55">${item.details}</p>
-          <div style="margin-top:0.75rem;display:flex;align-items:center;justify-content:space-between">
-            <span class="badge badge-verified">${i18n.t('badge_verified_source')}</span>
-            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem;font-size:0.75rem" onclick="openSourceModal('${item.sourceId}')">${i18n.t('btn_inspect_source')}</button>
+  const leelas = dataManager.getLeelas();
+  // Show only active leelas (no coming-soon placeholders)
+  const availableLeelas = leelas.filter(l => l.status === 'active');
+  const isSelected = currentActiveLeelaId !== null;
+  const currentLeela = isSelected ? dataManager.getLeelaById(currentActiveLeelaId) : null;
+
+  // 1. Render Selector Grid (Active Cards: बाल्यकाल 1896-1916 & युवा अवस्था 1916-1921)
+  selectorContainer.innerHTML = availableLeelas.map(l => {
+    const isActive = l.id === currentActiveLeelaId;
+
+    return `
+      <div class="leela-era-card ${isActive ? 'active' : ''}" 
+           onclick="toggleLeelaSelection('${l.id}')"
+           style="cursor:pointer;width:100%;">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+            <span class="leela-era-duration">📅 ${l.duration}</span>
+            <span class="badge badge-${isActive ? 'verified' : 'devotee'}">${isActive ? '✓ चयनित (Selected)' : 'क्लिक करके पढ़ें'}</span>
           </div>
+          <h3 class="leela-era-title" style="font-size:1.35rem;margin-bottom:0.4rem">${l.title}</h3>
+          <p class="leela-era-subtitle" style="font-size:0.92rem;color:var(--text-muted);margin-bottom:1rem">${l.subtitle || l.summary}</p>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:0.75rem;border-top:1px dashed var(--line);font-size:0.84rem;">
+          <span style="color:var(--text-muted)"><strong>अध्याय:</strong> ${l.chapters ? l.chapters.length : 0} अध्याय (पूर्ण प्रामाणिक पाठ)</span>
+          <button class="btn btn-${isActive ? 'secondary' : 'primary'}" style="padding:0.4rem 0.9rem;font-size:0.8rem">
+            ${isActive ? '▲ बंद करें (Collapse)' : '📖 पढ़ें (Read Full Leela) ↓'}
+          </button>
         </div>
       </div>
+    `;
+  }).join('');
+
+  // 2. Hide or Show Content Area depending on selection
+  if (!isSelected || !currentLeela) {
+    if (bannerContainer) bannerContainer.style.display = 'none';
+    if (controlsBar) controlsBar.style.display = 'none';
+    chaptersContainer.style.display = 'none';
+    return;
+  }
+
+  // Show Content Area when selected
+  if (bannerContainer) bannerContainer.style.display = 'block';
+  if (controlsBar) controlsBar.style.display = 'block';
+  chaptersContainer.style.display = 'block';
+
+  // 3. Render Hero Banner for Active Leela with Collapse Option
+  if (bannerContainer && currentLeela) {
+    bannerContainer.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
+        <div>
+          <span class="badge badge-verified" style="margin-bottom:0.5rem;">प्रमाणित जीवन-वृत्त (Verified Biography)</span>
+          <h3 class="leela-hero-title">${currentLeela.title} <span style="font-size:1.1rem;color:var(--saffron-600);font-weight:600">(${currentLeela.duration})</span></h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
+          <button class="btn btn-secondary" style="padding:0.45rem 0.9rem;font-size:0.82rem;font-weight:600;" onclick="collapseLeelaSelection()">
+            ← वापस लीला चयन (Collapse)
+          </button>
+          <a href="${currentLeela.sourceUrl || 'https://vedabase.io/en/library/spl/'}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:0.45rem 0.9rem;font-size:0.82rem">
+            📖 मूल स्रोत संदर्शन ↗
+          </a>
+        </div>
+      </div>
+      <p style="font-size:1.05rem;line-height:1.7;color:var(--text-main);margin-bottom:1.25rem;">
+        ${currentLeela.summary}
+      </p>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;padding-top:1rem;border-top:1px solid var(--line);font-size:0.85rem;color:var(--text-muted)">
+        <span><strong>अध्याय संख्या:</strong> ${currentLeela.chapters ? currentLeela.chapters.length : 0} अध्याय (पूर्ण विस्तृत विवरण)</span>
+        <span><strong>आधार ग्रंथ:</strong> ${currentLeela.sourceTitle}</span>
+        <span><strong>स्थान:</strong> कलकत्ता (बेनियापुकुर, हैरिसन रोड व उत्तर कलकत्ता)</span>
+      </div>
+    `;
+  }
+
+  // 4. Render Chapter Quick Nav Pills
+  if (chapterPillsContainer && currentLeela.chapters) {
+    chapterPillsContainer.innerHTML = currentLeela.chapters.map((ch, idx) => `
+      <button class="chapter-pill-btn" onclick="scrollToChapter('${ch.id}')">
+        अध्याय ${idx + 1}
+      </button>
     `).join('');
   }
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      render(btn.getAttribute('data-era'));
-    });
-  });
-
-  render('all');
-}
-
-/* Render Lilas */
-function initLilas() {
-  const container = document.getElementById('lilas-container');
-  const filterBtns = document.querySelectorAll('#lilas-filters button');
-
-  if (!container) return;
-
-  function render(category = 'all') {
-    let items = dataManager.getLilas(category);
-    if (items.length === 0) {
-      container.innerHTML = '<p class="sans-text" style="color:var(--text-muted)">No lilas found in this category.</p>';
-      return;
+  // 5. Render Chapters List
+  if (currentLeela.chapters) {
+    let filteredChapters = currentLeela.chapters;
+    if (currentLeelaSearch.trim()) {
+      const q = currentLeelaSearch.toLowerCase().trim();
+      filteredChapters = currentLeela.chapters.filter(ch => 
+        ch.title.toLowerCase().includes(q) ||
+        ch.highlights.some(h => h.toLowerCase().includes(q)) ||
+        ch.paragraphs.some(p => p.toLowerCase().includes(q))
+      );
     }
 
-    container.innerHTML = items.map(rawItem => {
-      // Get full translation if active
-      const item = i18n.getContentLila(rawItem.id, rawItem);
-
-      return `
-        <article class="glass-card" style="display:flex;flex-direction:column;justify-content:space-between">
-          <div>
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem">
-              <span class="badge badge-${item.status === 'verified' ? 'verified' : 'devotee'}">${item.contentType}</span>
-              <span class="sans-text" style="font-size:0.8rem;color:var(--saffron-500);font-weight:600">${item.period}</span>
+    if (filteredChapters.length === 0) {
+      chaptersContainer.innerHTML = `
+        <div class="glass-card" style="text-align:center;padding:3rem">
+          <p style="font-size:1.1rem;color:var(--text-muted)">"<strong>${currentLeelaSearch}</strong>" से संबंधित कोई विवरण नहीं मिला।</p>
+          <button class="btn btn-secondary" style="margin-top:1rem" onclick="clearLeelaSearch()">खोज रीसेट करें</button>
+        </div>
+      `;
+    } else {
+      chaptersContainer.innerHTML = filteredChapters.map(ch => `
+        <article id="${ch.id}" class="leela-chapter-card">
+          <div class="chapter-card-header">
+            <div>
+              <span style="font-size:0.82rem;font-weight:700;color:var(--saffron-600);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:0.2rem">
+                ${currentLeela.title} (${currentLeela.duration}) — अध्याय ${ch.chapterNumber}
+              </span>
+              <h3 class="chapter-card-title">${ch.title}</h3>
             </div>
-            <h3 style="font-size:1.3rem;margin-bottom:0.5rem">${item.title}</h3>
-            <p style="color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">${item.summary}</p>
-            <p style="font-size:0.9rem;line-height:1.55">${item.fullStory}</p>
+            <span class="chapter-date-badge">📅 ${ch.date}</span>
           </div>
-          <div style="margin-top:1.25rem;padding-top:0.75rem;border-top:1px dashed var(--line);font-size:0.82rem;color:var(--text-light)">
-            <strong>${i18n.t('source_label')}</strong> ${item.sourceTitle} (${item.sourceAuthor})
-            ${item.reflection ? `<br><em style="color:var(--text-muted)">${i18n.t('reflection_label')} "${item.reflection}"</em>` : ''}
+
+          ${ch.highlights && ch.highlights.length ? `
+            <div class="chapter-highlights-wrap">
+              ${ch.highlights.map(h => `<span class="chapter-highlight-pill">✦ ${h}</span>`).join('')}
+            </div>
+          ` : ''}
+
+          <div class="chapter-body">
+            ${ch.paragraphs.map(p => `<p class="chapter-paragraph">${p}</p>`).join('')}
+          </div>
+
+          <div class="chapter-source-footer">
+            <div>
+              <strong>प्रामाणिक स्रोत संदर्शन:</strong> ${ch.sourceNote || currentLeela.sourceTitle}
+            </div>
+            <a href="${ch.sourceUrl || 'https://vedabase.io/en/library/spl/'}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:0.35rem 0.8rem;font-size:0.78rem">
+              🔗 स्रोत देखें ↗
+            </a>
           </div>
         </article>
-      `;
-    }).join('');
+      `).join('');
+    }
   }
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      render(btn.getAttribute('data-category'));
+  // 6. Search Listener
+  if (searchInput && !searchInput.dataset.hasListener) {
+    searchInput.dataset.hasListener = 'true';
+    searchInput.addEventListener('input', (e) => {
+      currentLeelaSearch = e.target.value;
+      renderLeelaView();
     });
-  });
+  }
 
-  render('all');
+  // Mirror content to page-lilas if active
+  const lilasMirror = document.getElementById('page-lilas-content');
+  if (lilasMirror && document.getElementById('page-lilas').classList.contains('active')) {
+    lilasMirror.innerHTML = document.getElementById('page-timeline').innerHTML;
+  }
+}
+
+function toggleLeelaSelection(leelaId) {
+  if (currentActiveLeelaId === leelaId) {
+    currentActiveLeelaId = null;
+  } else {
+    currentActiveLeelaId = leelaId;
+  }
+  currentLeelaSearch = '';
+  const searchInput = document.getElementById('leela-search-input');
+  if (searchInput) searchInput.value = '';
+  renderLeelaView();
+
+  if (currentActiveLeelaId) {
+    setTimeout(() => {
+      const banner = document.getElementById('active-leela-banner');
+      if (banner) banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+function collapseLeelaSelection() {
+  currentActiveLeelaId = null;
+  currentLeelaSearch = '';
+  const searchInput = document.getElementById('leela-search-input');
+  if (searchInput) searchInput.value = '';
+  renderLeelaView();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToChapter(chapterId) {
+  const el = document.getElementById(chapterId);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function clearLeelaSearch() {
+  currentLeelaSearch = '';
+  const searchInput = document.getElementById('leela-search-input');
+  if (searchInput) searchInput.value = '';
+  renderLeelaView();
 }
 
 /* Render Teachings */
@@ -308,11 +433,20 @@ function initBooks() {
   const container = document.getElementById('books-container');
   const searchInput = document.getElementById('library-search-input');
   const searchClearBtn = document.getElementById('library-search-clear');
+  const countBadge = document.getElementById('library-book-count');
   
   if (!container) return;
 
   const rawBooks = (dataManager && dataManager.localData && dataManager.localData.books) || (typeof INITIAL_DATA !== 'undefined' && INITIAL_DATA.books) || [];
   if (rawBooks.length === 0) return;
+
+  // Update Dynamic Book Count Pill
+  if (countBadge) {
+    const totalCount = rawBooks.length;
+    const lang = i18n.currentLang;
+    const countLabel = lang === 'hi' ? `${totalCount} ग्रंथ` : (lang === 'gu' ? `${totalCount} ગ્રંથો` : `${totalCount} Books`);
+    countBadge.textContent = `📚 ${countLabel}`;
+  }
 
   function renderBooksList(query = '') {
     const lang = i18n.currentLang;
@@ -349,6 +483,10 @@ function initBooks() {
       const isEasyJourney = q.includes('easy journey') || q.includes('planets') || q.includes('space') || q.includes('अन्य') || q.includes('ग्रहों') || q.includes('यात्रा') || q.includes('અન્ય') || q.includes('ગ્રહો');
       const isAttainingKC = q.includes('attaining') || q.includes('consciousness') || q.includes('matchless') || q.includes('कृष्णभावनामृत') || q.includes('प्राप्ति') || q.includes('કૃષ્ણભાવનામૃત');
       const isChallenge = q.includes('challenge') || q.includes('chunauti') || q.includes('हरे') || q.includes('चुनौती') || q.includes('હરે') || q.includes('પડકાર');
+      const isAtmaKaPravas = q.includes('atma') || q.includes('pravas') || q.includes('soul') || q.includes('आत्मा') || q.includes('प्रवास') || q.includes('આત્મા') || q.includes('પ્રવાસ');
+      const isKrishnaBhavanamrita = q.includes('bhavanamrita') || q.includes('bhavanamrta') || q.includes('भावनामृत') || q.includes('कृष्णभावनामृत') || q.includes('કૃષ્ણભાવનામૃત');
+      const isJeevanKaSrotaJeevan = q.includes('jeevan') || q.includes('srota') || q.includes('life comes') || q.includes('जीवन') || q.includes('स्रोत') || q.includes('સ્રોત');
+      const isKarmaYoga = q.includes('karma') || q.includes('कर्म') || q.includes('कॉर्म') || q.includes('કર્મ') || q.includes('action');
 
       if (isGeeta && (b.id === 'book-gita-yatharoop' || titleEn.includes('gita'))) return true;
       if (isBhagavatam && (b.id === 'book-srimad-bhagavatam' || titleEn.includes('bhagavatam'))) return true;
@@ -360,6 +498,10 @@ function initBooks() {
       if (isEasyJourney && (b.id === 'book-easy-journey-to-other-planets' || titleHi.includes('अन्य'))) return true;
       if (isAttainingKC && (b.id === 'book-attaining-krishna-consciousness' || titleHi.includes('कृष्णभावनामृत'))) return true;
       if (isChallenge && (b.id === 'book-hare-krishna-challenge' || titleHi.includes('चुनौती'))) return true;
+      if (isAtmaKaPravas && (b.id === 'book-atma-ka-pravas' || titleHi.includes('आत्मा') || titleEn.includes('atma'))) return true;
+      if (isKrishnaBhavanamrita && (b.id === 'book-krishna-bhavanamrita' || b.id === 'book-attaining-krishna-consciousness' || titleHi.includes('कृष्णभावनामृत'))) return true;
+      if (isJeevanKaSrotaJeevan && (b.id === 'book-jeevan-ka-srota-jeevan' || titleHi.includes('जीवन'))) return true;
+      if (isKarmaYoga && (b.id === 'book-karma-yoga' || titleHi.includes('कर्म'))) return true;
 
       return titleEn.includes(q) || titleHi.includes(q) || titleGu.includes(q) ||
              authorEn.includes(q) || authorHi.includes(q) || authorGu.includes(q) ||
@@ -389,23 +531,23 @@ function initBooks() {
       const sourceUrl = b.sourceUrl || 'https://www.bbt.org/books/';
 
       return `
-        <div class="glass-card book-card" style="display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:1.5rem;box-sizing:border-box;cursor:pointer" onclick="if(!event.target.closest('a')) window.open('${pdfUrl}', '_blank')">
+        <div class="compact-book-card" onclick="if(!event.target.closest('a')) window.open('${pdfUrl}', '_blank')">
           <div>
-            <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="book-cover-link" style="display:block;margin-bottom:1.25rem">
-              <div class="book-cover-container" style="height:320px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.4);border-radius:var(--radius-md);padding:0.75rem;box-shadow:inset 0 0 10px rgba(0,0,0,0.03)">
-                <img src="${coverUrl}" alt="${altText}" class="book-cover-img" style="max-height:100%;max-width:100%;object-fit:contain;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,0.12);transition:transform 0.3s ease" />
+            <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="book-cover-link">
+              <div class="compact-cover-wrap">
+                <img src="${coverUrl}" alt="${altText}" class="compact-cover-img" />
               </div>
             </a>
-            <span class="badge badge-verified" style="margin-bottom:0.6rem;display:inline-block">${category}</span>
-            <h3 style="font-size:1.35rem;margin-bottom:0.35rem;color:var(--text-main);font-family:'Cinzel',serif;font-weight:700">${title}</h3>
-            <p class="sans-text" style="font-size:0.85rem;color:var(--maroon-700);font-weight:600;margin-bottom:0.75rem;line-height:1.4">${byLabel} ${author}</p>
-            <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.6;margin-bottom:1.25rem">${summary}</p>
+            <span class="compact-badge badge-verified">${category}</span>
+            <h3 class="compact-book-title">${title}</h3>
+            <p class="compact-book-author">${byLabel} ${author}</p>
+            <p class="compact-book-summary">${summary}</p>
           </div>
-          <div style="display:flex;flex-direction:column;gap:0.6rem;margin-top:auto">
-            <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;justify-content:center;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem">
+          <div class="compact-card-actions">
+            <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="compact-btn-primary" onclick="event.stopPropagation()">
               📖 ${btnText} ↗
             </a>
-            <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width:100%;justify-content:center;font-size:0.85rem;display:inline-flex;align-items:center;gap:0.4rem;color:var(--text-muted);border-color:var(--line)" onclick="event.stopPropagation()">
+            <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer" class="compact-btn-secondary" onclick="event.stopPropagation()">
               🏛️ ${officialSourceText} ↗
             </a>
           </div>

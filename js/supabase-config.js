@@ -13,9 +13,20 @@ class DataManager {
 
   loadLocalData() {
     const saved = localStorage.getItem('ps_local_dataset');
+    let data = INITIAL_DATA;
     if (saved) {
       try {
-        return JSON.parse(saved);
+        data = JSON.parse(saved);
+        if (typeof INITIAL_DATA !== 'undefined' && INITIAL_DATA.books) {
+          if (!data.books) data.books = [];
+          const existingIds = new Set(data.books.map(b => b.id));
+          INITIAL_DATA.books.forEach(b => {
+            if (!existingIds.has(b.id)) {
+              data.books.push(b);
+            }
+          });
+        }
+        return data;
       } catch (e) {
         console.warn('Could not parse saved local dataset, using seed data');
       }
@@ -109,6 +120,16 @@ class DataManager {
       items = items.filter(item => item.era === eraFilter);
     }
     return items;
+  }
+
+  // Get Leelas (Structured Life Eras)
+  getLeelas() {
+    return this.localData.leelas || (typeof INITIAL_DATA !== 'undefined' ? INITIAL_DATA.leelas : []);
+  }
+
+  getLeelaById(id) {
+    const list = this.getLeelas();
+    return list.find(l => l.id === id) || list[0] || null;
   }
 
   // Get Lilas
@@ -206,7 +227,7 @@ class DataManager {
         t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || t.subtitle.toLowerCase().includes(q)
       ),
       books: (this.localData.books || []).filter(b => 
-        b.title.toLowerCase().includes(q) || b.summary.toLowerCase().includes(q)
+        (b.title || '').toLowerCase().includes(q) || (b.titleHindi || '').toLowerCase().includes(q) || (b.titleGujarati || '').toLowerCase().includes(q) || (b.summary || '').toLowerCase().includes(q) || (b.summaryHindi || '').toLowerCase().includes(q) || (b.summaryGujarati || '').toLowerCase().includes(q)
       )
     };
   }

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Layout Preview — Prabhupada Seva</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Proposed Compact Library Layout Preview Styles */
+    .preview-header-banner {
+      background: linear-gradient(135deg, #7c2d12, #b45309);
+      color: #fff;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+    .preview-header-banner h2 {
+      color: #fff;
+      margin: 0 0 0.4rem;
+      font-size: 1.4rem;
+    }
+    .preview-header-banner p {
+      margin: 0;
+      font-size: 0.92rem;
+      opacity: 0.92;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Library Header with Dynamic Counter Badge */
+    .library-header-wrap {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 2.5rem;
+    }
+    .library-heading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .library-heading h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+    }
+    .book-count-pill {
+      background: linear-gradient(135deg, var(--saffron-500), var(--maroon-700));
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.3rem 0.85rem;
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-sm);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    /* Compact Uniform Grid */
+    .proposed-books-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1.25rem;
+      max-width: 1140px;
+      margin: 0 auto 3.5rem;
+      justify-content: center;
+    }
+
+    @media (max-width: 1120px) {
+      .proposed-books-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 880px) {
+      .proposed-books-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .proposed-books-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.85rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .proposed-books-grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        max-width: 250px;
+      }
+    }
+
+    /* Proposed Compact Book Card */
+    .compact-book-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      max-width: 215px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-backdrop);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .compact-book-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--saffron-500);
+    }
+
+    /* Fixed Aspect-Ratio Cover Display Box (Prevents Stretching & Distortion) */
+    .compact-cover-wrap {
+      width: 100%;
+      height: 215px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem;
+      margin-bottom: 0.75rem;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+
+    .compact-cover-img {
+      max-height: 100%;
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+      transition: transform 0.3s ease;
+    }
+
+    .compact-book-card:hover .compact-cover-img {
+      transform: scale(1.04);
+    }
+
+    .compact-badge {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 0.4rem;
+      display: inline-block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+    }
+
+    .compact-book-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0 0 0.25rem;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 2.7em;
+    }
+
+    .compact-book-author {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.78rem;
+      color: var(--maroon-700);
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .compact-book-summary {
+      font-family: 'Lora', serif;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin: 0 0 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .compact-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-top: auto;
+    }
+
+    .compact-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      width: 100%;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.82rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--saffron-500), var(--maroon-700));
+      color: #ffffff;
+      border-radius: var(--radius-sm);
+      border: none;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .compact-btn-primary:hover {
+      opacity: 0.92;
+      color: #ffffff;
+    }
+
+    .compact-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      width: 100%;
+      padding: 0.38rem 0.65rem;
+      font-size: 0.76rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .compact-btn-secondary:hover {
+      border-color: var(--saffron-500);
+      color: var(--maroon-700);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .proposed-books-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+      }
+      .compact-cover-wrap {
+        height: 190px;
+      }
+      .compact-book-title {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-container">
+      <a class="brand">
+        <div class="brand-avatar-wrap">
+          <img src="images/srila-prabhupad.jpg" alt="Srila Prabhupada" class="brand-avatar">
+        </div>
+        <span>Prabhupada <span class="highlight">Seva</span></span>
+      </a>
+      <span class="badge badge-verified" style="font-size:0.85rem">PROPOSED LIBRARY LAYOUT PREVIEW</span>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:2rem">
+
+    <div class="preview-header-banner">
+      <h2>📌 Step 1: Proposed Compact Library Layout Preview</h2>
+      <p>This is a separate mockup for your review. The live website has NOT been changed yet. Please inspect the grid, book covers, text alignment, and dynamic count badge below.</p>
+    </div>
+
+    <!-- Proposed Library Section -->
+    <div class="library-header-wrap">
+      <p class="hero-eyebrow">Sacred Literature</p>
+      <div class="library-heading">
+        <h2>Authorized Literature Library</h2>
+        <span id="preview-count-pill" class="book-count-pill">📚 13 Books</span>
+      </div>
+      <p style="color:var(--text-muted);margin:0">Read authentic translations and purports by Srila Prabhupada published by the Bhaktivedanta Book Trust.</p>
+    </div>
+
+    <!-- Search Bar Mockup -->
+    <div class="library-search-container" style="margin-bottom:2rem">
+      <div class="library-search-box">
+        <span class="library-search-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <input type="text" id="preview-search" class="library-search-input" placeholder="Search books by title, author, category..." autocomplete="off" />
+      </div>
+    </div>
+
+    <!-- Grid Container for All 13 Books -->
+    <div id="preview-grid" class="proposed-books-grid">
+      <!-- Populated via script -->
+    </div>
+
+  </main>
+
+  <script src="js/data.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('preview-grid');
+      const countPill = document.getElementById('preview-count-pill');
+      const searchInput = document.getElementById('preview-search');
+
+      const books = INITIAL_DATA.books || [];
+      countPill.textContent = `📚 ${books.length} Books`;
+
+      function render(filter = '') {
+        const q = filter.trim().toLowerCase();
+        const filtered = books.filter(b => {
+          if (!q) return true;
+          return (b.title || '').toLowerCase().includes(q) ||
+                 (b.titleHindi || '').toLowerCase().includes(q) ||
+                 (b.author || '').toLowerCase().includes(q) ||
+                 (b.category || '').toLowerCase().includes(q);
+        });
+
+        grid.innerHTML = filtered.map(b => `
+          <div class="compact-book-card" onclick="window.open('${b.pdfUrl}', '_blank')">
+            <div>
+              <div class="compact-cover-wrap">
+                <img src="${b.coverUrl}" alt="${b.altText || b.title}" class="compact-cover-img" />
+              </div>
+              <span class="compact-badge badge-verified">${b.categoryHindi || b.category}</span>
+              <h3 class="compact-book-title">${b.titleHindi || b.title}</h3>
+              <p class="compact-book-author">By A.C. Bhaktivedanta Swami</p>
+              <p class="compact-book-summary">${b.summaryHindi || b.summary}</p>
+            </div>
+            <div class="compact-card-actions">
+              <a href="${b.pdfUrl}" target="_blank" class="compact-btn-primary" onclick="event.stopPropagation()">
+                📖 Read PDF ↗
+              </a>
+              <a href="${b.sourceUrl || 'https://bbt.org'}" target="_blank" class="compact-btn-secondary" onclick="event.stopPropagation()">
+                🏛️ BBT Source ↗
+              </a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      render('');
+
+      searchInput.addEventListener('input', (e) => {
+        render(e.target.value);
+      });
+    });
+  </script>
+</body>
+</html>
