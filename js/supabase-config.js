@@ -11,27 +11,107 @@ class DataManager {
     }
   }
 
+  sanitizeBooks(localBooks) {
+    if (typeof INITIAL_DATA === 'undefined' || !Array.isArray(INITIAL_DATA.books)) {
+      return Array.isArray(localBooks) ? localBooks : [];
+    }
+
+    const seedBooks = INITIAL_DATA.books;
+    const seedIds = new Set(seedBooks.map(b => b.id));
+
+    const normalize = (str) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    const seedPdfs = new Set(seedBooks.map(b => normalize(b.pdfUrl || b.authorizedUrl)));
+    const seedTitles = new Set();
+    seedBooks.forEach(b => {
+      if (b.title) seedTitles.add(normalize(b.title));
+      if (b.titleHindi) seedTitles.add(normalize(b.titleHindi));
+      if (b.titleGujarati) seedTitles.add(normalize(b.titleGujarati));
+    });
+
+    // Add common legacy aliases to trap old records
+    const legacyAliases = [
+      'bhagavadgitaasitis', 'srimadbhagavatam', 'sriisopanisad', 'sriisopanishad',
+      'perfectquestionsperfectanswers', 'teachingsoflordcaitanya', 'teachingsoflordchaitanya',
+      'easyjourneytootherplanets', 'attainingkrishnaconsciousness', 'theharekrishnachallenge',
+      'reincarnation', 'punaragaman', 'karmayoga', 'lifecomesfromlife'
+    ];
+    legacyAliases.forEach(alias => seedTitles.add(alias));
+
+    // Canonical seed books always come first
+    const resultBooks = [...seedBooks];
+    const resultIds = new Set(seedBooks.map(b => b.id));
+    const resultPdfs = new Set(seedBooks.map(b => normalize(b.pdfUrl || b.authorizedUrl)));
+
+    // Preserve non-duplicate user-added custom books
+    if (Array.isArray(localBooks)) {
+      localBooks.forEach(b => {
+        if (!b || typeof b !== 'object') return;
+        const bId = b.id;
+        const bPdf = normalize(b.pdfUrl || b.authorizedUrl);
+        const bTitle = normalize(b.title);
+
+        const isDuplicate = resultIds.has(bId) || 
+                            (bPdf && seedPdfs.has(bPdf)) || 
+                            (bTitle && seedTitles.has(bTitle));
+
+        if (!isDuplicate && bId) {
+          resultBooks.push(b);
+          resultIds.add(bId);
+          if (bPdf) resultPdfs.add(bPdf);
+        }
+      });
+    }
+
+    return resultBooks;
+  }
+
   loadLocalData() {
     const saved = localStorage.getItem('ps_local_dataset');
-    let data = INITIAL_DATA;
+    let data = typeof INITIAL_DATA !== 'undefined' ? { ...INITIAL_DATA } : { books: [] };
     if (saved) {
       try {
-        data = JSON.parse(saved);
-        if (typeof INITIAL_DATA !== 'undefined' && INITIAL_DATA.books) {
-          if (!data.books) data.books = [];
-          const existingIds = new Set(data.books.map(b => b.id));
-          INITIAL_DATA.books.forEach(b => {
-            if (!existingIds.has(b.id)) {
-              data.books.push(b);
-            }
-          });
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          data = parsed;
         }
-        return data;
       } catch (e) {
         console.warn('Could not parse saved local dataset, using seed data');
       }
     }
-    return INITIAL_DATA;
+
+    data.books = this.sanitizeBooks(data.books);
+    return data;
+  }
+
+  getBooks() {
+    const sanitized = this.sanitizeBooks(this.localData ? this.localData.books : []);
+    if (this.localData) {
+      this.localData.books = sanitized;
+      this.saveLocalData();
+    }
+    return sanitized;
+  }
+
+  getCenters() {
+    if (this.localData && Array.isArray(this.localData.iskconCenters) && this.localData.iskconCenters.length > 0) {
+      return this.localData.iskconCenters;
+    }
+    return (typeof INITIAL_DATA !== 'undefined' && Array.isArray(INITIAL_DATA.iskconCenters)) ? INITIAL_DATA.iskconCenters : [];
+  }
+
+  getSources() {
+    if (this.localData && Array.isArray(this.localData.sources) && this.localData.sources.length > 0) {
+      return this.localData.sources;
+    }
+    return (typeof INITIAL_DATA !== 'undefined' && Array.isArray(INITIAL_DATA.sources)) ? INITIAL_DATA.sources : [];
+  }
+
+  getTeachings() {
+    if (this.localData && Array.isArray(this.localData.teachings) && this.localData.teachings.length > 0) {
+      return this.localData.teachings;
+    }
+    return (typeof INITIAL_DATA !== 'undefined' && Array.isArray(INITIAL_DATA.teachings)) ? INITIAL_DATA.teachings : [];
   }
 
   saveLocalData() {

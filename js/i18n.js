@@ -957,6 +957,7 @@ class I18nManager {
   }
 
   getContentTeachings(defaultTeachings) {
+    if (!defaultTeachings || !Array.isArray(defaultTeachings)) return [];
     if (this.currentLang !== 'en' && CONTENT_TRANSLATIONS[this.currentLang]?.teachings) {
       const transList = CONTENT_TRANSLATIONS[this.currentLang].teachings;
       return defaultTeachings.map((t, i) => {
@@ -976,6 +977,7 @@ class I18nManager {
   }
 
   getContentCenter(item) {
+    if (!item || typeof item !== 'object') return {};
     if (this.currentLang !== 'en' && CONTENT_TRANSLATIONS[this.currentLang]?.centers?.[item.id]) {
       const trans = CONTENT_TRANSLATIONS[this.currentLang].centers[item.id];
       return {

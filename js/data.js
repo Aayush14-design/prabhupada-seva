@@ -1905,5 +1905,112 @@ const INITIAL_DATA = {
     { num: 16, name: "The Divine and Demoniac Natures", verses: 24, summary: "Qualities that lead to liberation versus those that cause bondage." },
     { num: 17, name: "The Divisions of Faith", verses: 28, summary: "How faith, worship, food, sacrifice, austerity, and charity are influenced by the three modes." },
     { num: 18, name: "Conclusion - The Perfection of Renunciation", verses: 78, summary: "The ultimate instruction: complete surrender to Lord Krishna (Sarva-dharman parityajya)." }
+  ],
+
+  teachings: [
+    {
+      id: "tch-1",
+      level: "Beginner / प्रारम्भिक",
+      title: "Science of the Soul & Bhagavad-gita",
+      titleHindi: "आत्मा का विज्ञान एवं भगवद्गीता",
+      titleGujarati: "આત્માનું વિજ્ઞાન અને ભગવદ્ગીતા",
+      subtitle: "Understanding the eternal difference between the physical body and the spirit soul (Aham Brahmasmi).",
+      subtitleHindi: "भौतिक शरीर और शाश्वत आत्मा (अहं ब्रह्मास्मि) के मौलिक अंतर को समझना।",
+      subtitleGujarati: "ભૌતિક શરીર અને શાશ્વત આત્મા વચ્ચેનો મૂળભૂત ભેદ.",
+      description: "The fundamental teaching of Vedic philosophy starts with realizing that we are not this temporary material body, but eternal spirit souls (jiva), eternal servants of Lord Sri Krishna.",
+      descriptionHindi: "वैदिक दर्शन की मूलभूत शिक्षा इस बोध से प्रारंभ होती है कि हम यह नश्वर शरीर नहीं, अपितु शाश्वत आत्मा हैं जो भगवान श्रीकृष्ण के नित्य दास हैं।",
+      descriptionGujarati: "વૈદિક તત્ત્વજ્ઞાનનું મૂળભૂત શિક્ષણ આત્માના બોધથી શરૂ થાય છે.",
+      keyTakeaways: [
+        "Difference between Matter (Prakriti) and Spirit (Purusha)",
+        "The Law of Karma and Reincarnation (Transmigration of the Soul)",
+        "Worship of Supreme Personality of Godhead, Sri Krishna",
+        "Chanting the Holy Names: Hare Krishna, Hare Krishna, Krishna Krishna, Hare Hare / Hare Rama, Hare Rama, Rama Rama, Hare Hare"
+      ],
+      keyTakeawaysHindi: [
+        "पदार्थ (प्रकृति) और चेतना (पुरुष) का भेद",
+        "कर्म का नियम एवं पुनर्जन्म का सिद्धांत",
+        "परम पुरुष भगवान श्रीकृष्ण की शरण तथा भक्ति",
+        "महामंत्र का नित्य जप: हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे / हरे राम हरे राम राम राम हरे हरे"
+      ],
+      citation: "Bhagavad-gita As It Is (Chapters 2 & 9)"
+    },
+    {
+      id: "tch-2",
+      level: "Intermediate / मध्यम",
+      title: "Bhakti-yoga & Srimad-Bhagavatam",
+      titleHindi: "भक्ति-योग एवं श्रीमद्भागवतम्",
+      titleGujarati: "ભક્તિ-યોગ અને શ્રીમદ્ભાગવતમ્",
+      subtitle: "The highest process of spiritual realization through pure unalloyed devotional service.",
+      subtitleHindi: "शुद्ध निष्काम अनन्य भक्ति सेवा द्वारा सर्वोच्च आध्यात्मिक अनुभूति।",
+      subtitleGujarati: "અનન્ય ભક્તિ સેવા દ્વારા પરમ આધ્યાત્મિક સિદ્ધિ.",
+      description: "Srimad-Bhagavatam (the Spotless Purana) explains that the ultimate goal of human life is not mere ritualism or impersonal liberation, but developing unalloyed love for God (Prema Bhakti).",
+      descriptionHindi: "श्रीमद्भागवतम् (अमल पुराण) सिखाता है कि मानव जीवन का परम लक्ष्य केवल कर्मकांड या निराकार मुक्ति नहीं, अपितु भगवान के प्रति अनन्य प्रेम (प्रेमा-भक्ति) प्राप्त करना है।",
+      descriptionGujarati: "માનવ જીવનનું પરમ લક્ષ્ય ભગવાન પ્રત્યે શુદ્ધ પ્રેમ પ્રાપ્ત કરવાનું છે.",
+      keyTakeaways: [
+        "Nine Processes of Devotional Service (Navadha Bhakti: Sravanam, Kirtanam, Smaranam...)",
+        "Association of Pure Devotees (Sadhu-sanga)",
+        "Acceptance of Authentic Guru-Parampara (Disciplic Succession)",
+        "Regulation of Life through Four Regulative Principles (Dharma)"
+      ],
+      keyTakeawaysHindi: [
+        "नवधा भक्ति के नौ अंग (श्रवणम्, कीर्तनम्, स्मरणम्, पादसेवनम्...)",
+        "शुद्ध भक्तों का संग (साधु-संग)",
+        "प्रामाणिक गुरु-परंपरा का आश्रय",
+        "चार नियम: अहिंसा, सत्य, शौच, दया का पालन"
+      ],
+      citation: "Srimad-Bhagavatam (Canto 1 & Canto 7)"
+    },
+    {
+      id: "tch-3",
+      level: "Advanced / उत्तम",
+      title: "Teachings of Lord Chaitanya & Gaudiya Vedanta",
+      titleHindi: "श्री चैतन्य महाप्रभु का शिक्षामृत एवं गौड़ीय वेदांत",
+      titleGujarati: "શ્રી ચૈતન્ય મહાપ્રભુનું શિક્ષામૃત અને ગૌડીય વેદાંત",
+      subtitle: "Achintya-Bhedabheda-Tattva: Simultaneous oneness and difference of the Supreme and His energies.",
+      subtitleHindi: "अचिंत्य-भेदाभेद-तत्त्व: परमेश्वर और उनकी शक्तियों का एक ही समय में एकत्व एवं पृथकत्व।",
+      subtitleGujarati: "અચિંત્ય-ભેદાભેદ-તત્ત્વ: ભગવાન અને તેમની શક્તિઓનું રહસ્ય.",
+      description: "Sri Chaitanya Mahaprabhu (1486–1534) introduced the Yuga-dharma for Kali-yuga: Harinama Sankirtan. His philosophy synthesizes the deepest truths of Upanishads, Vedanta, and Bhagavata Purana.",
+      descriptionHindi: "श्री चैतन्य महाप्रभु ने कलि-युग के लिए युग-धर्म हरिनाम संकीर्तन का प्रवर्तन किया। उनका दर्शन उपनिषदों, वेदांत और भागवत पुराण के गूढ़तम सत्यों का सामंजस्य प्रस्तुत करता है।",
+      descriptionGujarati: "શ્રી ચૈતન્ય મહાપ્રભુએ કલિયુગ માટે હરિનામ સંકીર્તનનો માર્ગ દર્શાવ્યો.",
+      keyTakeaways: [
+        "Achintya-Bhedabheda Tattva (Inconceivable Simultaneous Oneness and Difference)",
+        "Glories of Sri Shikshashtakam (Eight Verses of Lord Chaitanya)",
+        "The Supreme Position of Sri Sri Radha-Krishna in Goloka Vrindavan",
+        "Preaching Krishna Consciousness Globally to Deliver all Souls"
+      ],
+      keyTakeawaysHindi: [
+        "अचिंत्य-भेदाभेद तत्त्व का दर्शन",
+        "श्री शिक्षाष्टकम् के आठ पावन श्लोक",
+        "गोलोक वृंदावन में श्री श्री राधा-कृष्ण की सर्वोपरि स्थिति",
+        "विश्व भर में कृष्णभावनामृत का प्रचार कर सर्वजीव कल्याण"
+      ],
+      citation: "Sri Caitanya-caritamrta (Madhya & Antya Lila)"
+    },
+    {
+      id: "tch-4",
+      level: "Practical Practice / व्यावहारिक साधना",
+      title: "Practical Spiritual Life & Daily Regimen",
+      titleHindi: "व्यावहारिक आध्यात्मिक जीवन एवं नित्य साधना",
+      titleGujarati: "વ્યાવહારિક આધ્યાત્મિક જીવન અને દૈનિક સાધના",
+      subtitle: "Simple Living, High Thinking: Transforming everyday duties into offerings to Krishna.",
+      subtitleHindi: "सादा जीवन, उच्च विचार: दैनिक कर्तव्यों को भगवान श्रीकृष्ण की प्रसन्नता हेतु सेवा में बदलना।",
+      subtitleGujarati: "સાદું જીવન, ઉચ્ચ વિચાર: દૈનિક કાર્યોને કૃષ્ણ સેવા બનાવવી.",
+      description: "Srila Prabhupada taught that spiritual life is not about abandoning household duties, but purifying consciousness through Prasadam, Japa, Temple Worship, and Scripture Reading.",
+      descriptionHindi: "श्रील प्रभुपाद ने सिखाया कि आध्यात्मिक जीवन गृहस्थ कर्तव्यों का त्याग नहीं, अपितु प्रसादम, जप, विग्रह-पूजा और शास्त्र अध्ययन द्वारा चेतना का शुद्धिकरण है।",
+      descriptionGujarati: "આધ્યાત્મિક જીવન એ દૈનિક કાર્યોનો ત્યાગ નથી પણ ચૈતન્યનું શુદ્ધિકરણ છે.",
+      keyTakeaways: [
+        "Daily Japa Meditation (16 rounds of Hare Krishna Mahamantra)",
+        "Honoring Krishna Prasadam (Pure Sanctified Vegetarian Food)",
+        "Daily Scripture Study (Reading Prabhupada's Books)",
+        "Simple Living, High Thinking in Modern Society"
+      ],
+      keyTakeawaysHindi: [
+        "दैनिक जप ध्यान (हरे कृष्ण महामंत्र का श्रद्धापूर्वक जप)",
+        "कृष्ण प्रसादम का आस्वादन (सात्विक शुद्ध भोजन)",
+        "नित्य शास्त्र स्वाध्याय (प्रभुपाद जी की पुस्तकों का पठन)",
+        "आधुनिक समाज में सादा जीवन, उच्च विचार का पालन"
+      ],
+      citation: "Nectar of Devotion & Science of Self-Realization"
+    }
   ]
 };

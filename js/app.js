@@ -185,6 +185,17 @@ function showPage(pageId) {
 
   window.location.hash = pageId;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Trigger rendering for active section to guarantee content appears
+  try {
+    if (pageId === 'books') initBooks();
+    else if (pageId === 'centers') initCenters();
+    else if (pageId === 'sources') initSources();
+    else if (pageId === 'teachings') initTeachings();
+    else if (pageId === 'timeline' || pageId === 'lilas') renderLeelaView();
+  } catch (err) {
+    console.error('Error rendering section for page:', pageId, err);
+  }
 }
 
 /* Render Modular Expandable Leela System */
@@ -406,246 +417,303 @@ function clearLeelaSearch() {
 
 /* Render Teachings */
 function initTeachings() {
-  const container = document.getElementById('teachings-container');
-  if (!container) return;
+  try {
+    const container = document.getElementById('teachings-container');
+    if (!container) return;
 
-  const items = i18n.getContentTeachings(INITIAL_DATA.teachings);
+    const rawTeachings = (dataManager && typeof dataManager.getTeachings === 'function') ? dataManager.getTeachings() : ((typeof INITIAL_DATA !== 'undefined' && Array.isArray(INITIAL_DATA.teachings)) ? INITIAL_DATA.teachings : []);
+    if (!rawTeachings || rawTeachings.length === 0) return;
 
-  container.innerHTML = items.map(t => `
-    <div class="glass-card">
-      <span class="badge badge-devotee" style="margin-bottom:0.75rem">${t.level}</span>
-      <h3 style="font-size:1.4rem;margin-bottom:0.25rem">${t.title}</h3>
-      <p class="sans-text" style="font-weight:600;color:var(--saffron-500);font-size:0.9rem;margin-bottom:0.75rem">${t.subtitle}</p>
-      <p style="color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">${t.description}</p>
-      <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-sm);border:1px solid var(--line);margin-bottom:1rem">
-        <strong class="sans-text" style="font-size:0.8rem;text-transform:uppercase;color:var(--maroon-700)">Key Principles:</strong>
-        <ul style="margin:0.5rem 0 0;padding-left:1.2rem;font-size:0.9rem">
-          ${t.keyTakeaways.map(k => `<li style="margin-bottom:0.35rem">${k}</li>`).join('')}
-        </ul>
-      </div>
-      <span style="font-size:0.8rem;color:var(--text-light)"><strong>Citation:</strong> ${t.citation}</span>
-    </div>
-  `).join('');
+    const lang = i18n.currentLang;
+    const items = i18n.getContentTeachings(rawTeachings);
+
+    container.innerHTML = (items || []).map(t => {
+      const level = lang === 'hi' ? (t.levelHindi || t.level) : (lang === 'gu' ? (t.levelGujarati || t.level) : t.level);
+      const title = lang === 'hi' ? (t.titleHindi || t.title) : (lang === 'gu' ? (t.titleGujarati || t.title) : t.title);
+      const subtitle = lang === 'hi' ? (t.subtitleHindi || t.subtitle) : (lang === 'gu' ? (t.subtitleGujarati || t.subtitle) : t.subtitle);
+      const description = lang === 'hi' ? (t.descriptionHindi || t.description) : (lang === 'gu' ? (t.descriptionGujarati || t.description) : t.description);
+      const keyTakeaways = lang === 'hi' ? (t.keyTakeawaysHindi || t.keyTakeaways) : (lang === 'gu' ? (t.keyTakeawaysGujarati || t.keyTakeaways) : t.keyTakeaways);
+
+      return `
+        <div class="glass-card">
+          <span class="badge badge-devotee" style="margin-bottom:0.75rem">${level}</span>
+          <h3 style="font-size:1.4rem;margin-bottom:0.25rem">${title}</h3>
+          <p class="sans-text" style="font-weight:600;color:var(--saffron-500);font-size:0.9rem;margin-bottom:0.75rem">${subtitle}</p>
+          <p style="color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem">${description}</p>
+          <div style="background:var(--bg-main);padding:1rem;border-radius:var(--radius-sm);border:1px solid var(--line);margin-bottom:1rem">
+            <strong class="sans-text" style="font-size:0.8rem;text-transform:uppercase;color:var(--maroon-700)">Key Principles:</strong>
+            <ul style="margin:0.5rem 0 0;padding-left:1.2rem;font-size:0.9rem">
+              ${(keyTakeaways || []).map(k => `<li style="margin-bottom:0.35rem">${k}</li>`).join('')}
+            </ul>
+          </div>
+          <span style="font-size:0.8rem;color:var(--text-light)"><strong>Citation:</strong> ${t.citation}</span>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error('Error rendering Teachings section:', err);
+  }
 }
 
 /* Render Books & Library Search */
 function initBooks() {
-  const container = document.getElementById('books-container');
-  const searchInput = document.getElementById('library-search-input');
-  const searchClearBtn = document.getElementById('library-search-clear');
-  const countBadge = document.getElementById('library-book-count');
-  
-  if (!container) return;
+  try {
+    const container = document.getElementById('books-container');
+    const searchInput = document.getElementById('library-search-input');
+    const searchClearBtn = document.getElementById('library-search-clear');
+    const countBadge = document.getElementById('library-book-count');
+    
+    if (!container) return;
 
-  const rawBooks = (dataManager && dataManager.localData && dataManager.localData.books) || (typeof INITIAL_DATA !== 'undefined' && INITIAL_DATA.books) || [];
-  if (rawBooks.length === 0) return;
+    let fetchedBooks = (dataManager && typeof dataManager.getBooks === 'function') ? dataManager.getBooks() : ((typeof INITIAL_DATA !== 'undefined' && Array.isArray(INITIAL_DATA.books)) ? INITIAL_DATA.books : []);
+    if (!fetchedBooks || fetchedBooks.length === 0) return;
 
-  // Update Dynamic Book Count Pill
-  if (countBadge) {
-    const totalCount = rawBooks.length;
-    const lang = i18n.currentLang;
-    const countLabel = lang === 'hi' ? `${totalCount} ग्रंथ` : (lang === 'gu' ? `${totalCount} ગ્રંથો` : `${totalCount} Books`);
-    countBadge.textContent = `📚 ${countLabel}`;
-  }
+    // Deduplicate books by ID, PDF URL, and normalized title
+    const seenIds = new Set();
+    const seenPdfs = new Set();
+    const seenTitles = new Set();
+    const normalizeStr = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
-  function renderBooksList(query = '') {
-    const lang = i18n.currentLang;
-    const btnText = i18n.t('btn_read_pdf') || 'Read PDF';
-    const byLabel = i18n.t('book_by_author') || 'By';
-    const officialSourceText = i18n.t('book_official_source') || 'Official BBT Source';
-    const q = query.trim().toLowerCase();
+    const rawBooks = fetchedBooks.filter(b => {
+      if (!b || typeof b !== 'object') return false;
+      const idKey = b.id;
+      const pdfKey = normalizeStr(b.pdfUrl || b.authorizedUrl);
+      const titleKey = normalizeStr(b.title);
 
-    // Search Filtering Logic
-    const filteredBooks = rawBooks.filter(b => {
-      if (!q) return true;
+      if (idKey && seenIds.has(idKey)) return false;
+      if (pdfKey && seenPdfs.has(pdfKey)) return false;
+      if (titleKey && seenTitles.has(titleKey)) return false;
 
-      const titleEn = (b.title || '').toLowerCase();
-      const titleHi = (b.titleHindi || '').toLowerCase();
-      const titleGu = (b.titleGujarati || '').toLowerCase();
-      const authorEn = (b.author || '').toLowerCase();
-      const authorHi = (b.authorHindi || '').toLowerCase();
-      const authorGu = (b.authorGujarati || '').toLowerCase();
-      const catEn = (b.category || '').toLowerCase();
-      const catHi = (b.categoryHindi || '').toLowerCase();
-      const catGu = (b.categoryGujarati || '').toLowerCase();
-      const sumEn = (b.summary || '').toLowerCase();
-      const sumHi = (b.summaryHindi || '').toLowerCase();
-      const sumGu = (b.summaryGujarati || '').toLowerCase();
-
-      // Common Search Aliases
-      const isGeeta = q.includes('geeta') || q.includes('gita') || q.includes('गीता') || q.includes('ગીતા') || q.includes('bhagavad');
-      const isBhagavatam = q.includes('bhagavatam') || q.includes('bhagwatam') || q.includes('भागवत') || q.includes('ભાગવત');
-      const isIsopanisad = q.includes('iso') || q.includes('isopanisad') || q.includes('isopanishad') || q.includes('ईशोपनिषद्') || q.includes('ईशोपनिषद') || q.includes('ઈશોપનિષદ');
-      const isPurnaPrashna = q.includes('purna') || q.includes('prashna') || q.includes('uttar') || q.includes('perfect questions') || q.includes('पूर्ण') || q.includes('प्रश्न') || q.includes('उत्तर') || q.includes('પણ') || q.includes('પ્રશ્ન');
-      const isPunaragaman = q.includes('punar') || q.includes('reincarnation') || q.includes('coming back') || q.includes('पुनरागमन') || q.includes('पुनर्जन्म') || q.includes('પુનરાગમન');
-      const isSriKrishna = q.includes('krishna') || q.includes('कृष्ण') || q.includes('कृष्णा') || q.includes('કૃષ્ણ') || q.includes('lila') || q.includes('लीला') || q.includes('पुरुषोत्तम');
-      const isChaitanya = q.includes('chaitanya') || q.includes('caitanya') || q.includes('shikshamrita') || q.includes('चैतन्य') || q.includes('शिक्षामृत') || q.includes('ચૈતન્ય');
-      const isEasyJourney = q.includes('easy journey') || q.includes('planets') || q.includes('space') || q.includes('अन्य') || q.includes('ग्रहों') || q.includes('यात्रा') || q.includes('અન્ય') || q.includes('ગ્રહો');
-      const isAttainingKC = q.includes('attaining') || q.includes('consciousness') || q.includes('matchless') || q.includes('कृष्णभावनामृत') || q.includes('प्राप्ति') || q.includes('કૃષ્ણભાવનામૃત');
-      const isChallenge = q.includes('challenge') || q.includes('chunauti') || q.includes('हरे') || q.includes('चुनौती') || q.includes('હરે') || q.includes('પડકાર');
-      const isAtmaKaPravas = q.includes('atma') || q.includes('pravas') || q.includes('soul') || q.includes('आत्मा') || q.includes('प्रवास') || q.includes('આત્મા') || q.includes('પ્રવાસ');
-      const isKrishnaBhavanamrita = q.includes('bhavanamrita') || q.includes('bhavanamrta') || q.includes('भावनामृत') || q.includes('कृष्णभावनामृत') || q.includes('કૃષ્ણભાવનામૃત');
-      const isJeevanKaSrotaJeevan = q.includes('jeevan') || q.includes('srota') || q.includes('life comes') || q.includes('जीवन') || q.includes('स्रोत') || q.includes('સ્રોત');
-      const isKarmaYoga = q.includes('karma') || q.includes('कर्म') || q.includes('कॉर्म') || q.includes('કર્મ') || q.includes('action');
-
-      if (isGeeta && (b.id === 'book-gita-yatharoop' || titleEn.includes('gita'))) return true;
-      if (isBhagavatam && (b.id === 'book-srimad-bhagavatam' || titleEn.includes('bhagavatam'))) return true;
-      if (isIsopanisad && (b.id === 'book-sri-isopanisad' || titleEn.includes('iso') || titleHi.includes('ईशोपनिषद्'))) return true;
-      if (isPurnaPrashna && (b.id === 'book-purna-prashna-purna-uttar' || titleHi.includes('पूर्ण'))) return true;
-      if (isPunaragaman && (b.id === 'book-punaragaman' || titleHi.includes('पुनरागमन'))) return true;
-      if (isSriKrishna && (b.id === 'book-lila-purushottam-sri-krishna' || titleHi.includes('कृष्ण') || titleHi.includes('लीला'))) return true;
-      if (isChaitanya && (b.id === 'book-chaitanya-shikshamrita' || titleHi.includes('चैतन्य'))) return true;
-      if (isEasyJourney && (b.id === 'book-easy-journey-to-other-planets' || titleHi.includes('अन्य'))) return true;
-      if (isAttainingKC && (b.id === 'book-attaining-krishna-consciousness' || titleHi.includes('कृष्णभावनामृत'))) return true;
-      if (isChallenge && (b.id === 'book-hare-krishna-challenge' || titleHi.includes('चुनौती'))) return true;
-      if (isAtmaKaPravas && (b.id === 'book-atma-ka-pravas' || titleHi.includes('आत्मा') || titleEn.includes('atma'))) return true;
-      if (isKrishnaBhavanamrita && (b.id === 'book-krishna-bhavanamrita' || b.id === 'book-attaining-krishna-consciousness' || titleHi.includes('कृष्णभावनामृत'))) return true;
-      if (isJeevanKaSrotaJeevan && (b.id === 'book-jeevan-ka-srota-jeevan' || titleHi.includes('जीवन'))) return true;
-      if (isKarmaYoga && (b.id === 'book-karma-yoga' || titleHi.includes('कर्म'))) return true;
-
-      return titleEn.includes(q) || titleHi.includes(q) || titleGu.includes(q) ||
-             authorEn.includes(q) || authorHi.includes(q) || authorGu.includes(q) ||
-             catEn.includes(q) || catHi.includes(q) || catGu.includes(q) ||
-             sumEn.includes(q) || sumHi.includes(q) || sumGu.includes(q);
+      if (idKey) seenIds.add(idKey);
+      if (pdfKey) seenPdfs.add(pdfKey);
+      if (titleKey) seenTitles.add(titleKey);
+      return true;
     });
 
-    if (filteredBooks.length === 0) {
-      container.innerHTML = `
-        <div class="library-no-results" style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-paper); border: 1px dashed var(--line-strong); border-radius: var(--radius-lg);">
-          <span style="font-size: 2.5rem; display: block; margin-bottom: 0.75rem;">📖</span>
-          <h4 class="sans-text" style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;" data-i18n="library_no_results_title">${i18n.t('library_no_results_title') || 'No matching books found'}</h4>
-          <p class="sans-text" style="font-size: 0.9rem; color: var(--text-muted); margin: 0;" data-i18n="library_no_results_hint">${i18n.t('library_no_results_hint') || 'Try searching for "Bhagavad Gita", "Bhagavatam", "Prabhupada", or "Scripture".'}</p>
-        </div>
-      `;
-      return;
+    // Update Dynamic Book Count Pill
+    if (countBadge) {
+      const totalCount = rawBooks.length;
+      const lang = i18n.currentLang;
+      const countLabel = lang === 'hi' ? `${totalCount} ग्रंथ` : (lang === 'gu' ? `${totalCount} ગ્રંથો` : `${totalCount} Books`);
+      countBadge.textContent = `📚 ${countLabel}`;
     }
 
-    container.innerHTML = filteredBooks.map(b => {
-      const title = lang === 'hi' ? (b.titleHindi || b.title) : (lang === 'gu' ? (b.titleGujarati || b.title) : b.title);
-      const author = lang === 'hi' ? (b.authorHindi || b.author) : (lang === 'gu' ? (b.authorGujarati || b.author) : b.author);
-      const category = lang === 'hi' ? (b.categoryHindi || b.category) : (lang === 'gu' ? (b.categoryGujarati || b.category) : b.category);
-      const summary = lang === 'hi' ? (b.summaryHindi || b.summary) : (lang === 'gu' ? (b.summaryGujarati || b.summary) : b.summary);
-      const pdfUrl = b.pdfUrl;
-      const coverUrl = b.coverUrl;
-      const altText = b.altText || `${title} cover`;
-      const sourceUrl = b.sourceUrl || 'https://www.bbt.org/books/';
+    function renderBooksList(query = '') {
+      const lang = i18n.currentLang;
+      const btnText = i18n.t('btn_read_pdf') || 'Read PDF';
+      const byLabel = i18n.t('book_by_author') || 'By';
+      const officialSourceText = i18n.t('book_official_source') || 'Official BBT Source';
+      const q = query.trim().toLowerCase();
 
-      return `
-        <div class="compact-book-card" onclick="if(!event.target.closest('a')) window.open('${pdfUrl}', '_blank')">
-          <div>
-            <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="book-cover-link">
-              <div class="compact-cover-wrap">
-                <img src="${coverUrl}" alt="${altText}" class="compact-cover-img" />
-              </div>
-            </a>
-            <span class="compact-badge badge-verified">${category}</span>
-            <h3 class="compact-book-title">${title}</h3>
-            <p class="compact-book-author">${byLabel} ${author}</p>
-            <p class="compact-book-summary">${summary}</p>
+      // Search Filtering Logic
+      const filteredBooks = rawBooks.filter(b => {
+        if (!q) return true;
+
+        const titleEn = (b.title || '').toLowerCase();
+        const titleHi = (b.titleHindi || '').toLowerCase();
+        const titleGu = (b.titleGujarati || '').toLowerCase();
+        const authorEn = (b.author || '').toLowerCase();
+        const authorHi = (b.authorHindi || '').toLowerCase();
+        const authorGu = (b.authorGujarati || '').toLowerCase();
+        const catEn = (b.category || '').toLowerCase();
+        const catHi = (b.categoryHindi || '').toLowerCase();
+        const catGu = (b.categoryGujarati || '').toLowerCase();
+        const sumEn = (b.summary || '').toLowerCase();
+        const sumHi = (b.summaryHindi || '').toLowerCase();
+        const sumGu = (b.summaryGujarati || '').toLowerCase();
+
+        // Common Search Aliases
+        const isGeeta = q.includes('geeta') || q.includes('gita') || q.includes('गीता') || q.includes('ગીતા') || q.includes('bhagavad');
+        const isBhagavatam = q.includes('bhagavatam') || q.includes('bhagwatam') || q.includes('भागवत') || q.includes('ભાગવત');
+        const isIsopanisad = q.includes('iso') || q.includes('isopanisad') || q.includes('isopanishad') || q.includes('ईशोपनिषद्') || q.includes('ईशोपनिषद') || q.includes('ઈશોપનિષદ');
+        const isPurnaPrashna = q.includes('purna') || q.includes('prashna') || q.includes('uttar') || q.includes('perfect questions') || q.includes('पूर्ण') || q.includes('प्रश्न') || q.includes('उत्तर') || q.includes('પણ') || q.includes('પ્રશ્ન');
+        const isPunaragaman = q.includes('punar') || q.includes('reincarnation') || q.includes('coming back') || q.includes('पुनरागमन') || q.includes('पुनर्जन्म') || q.includes('પુનરાગમન');
+        const isSriKrishna = q.includes('krishna') || q.includes('कृष्ण') || q.includes('कृष्णा') || q.includes('કૃષ્ણ') || q.includes('lila') || q.includes('लीला') || q.includes('पुरुषोत्तम');
+        const isChaitanya = q.includes('chaitanya') || q.includes('caitanya') || q.includes('shikshamrita') || q.includes('चैतन्य') || q.includes('शिक्षामृत') || q.includes('ચૈતન્ય');
+        const isEasyJourney = q.includes('easy journey') || q.includes('planets') || q.includes('space') || q.includes('अन्य') || q.includes('ग्रहों') || q.includes('यात्रा') || q.includes('અન્ય') || q.includes('ગ્રહો');
+        const isAttainingKC = q.includes('attaining') || q.includes('consciousness') || q.includes('matchless') || q.includes('कृष्णभावनामृत') || q.includes('प्राप्ति') || q.includes('કૃષ્ણભાવનામૃત');
+        const isChallenge = q.includes('challenge') || q.includes('chunauti') || q.includes('हरे') || q.includes('चुनौती') || q.includes('હરે') || q.includes('પડકાર');
+        const isAtmaKaPravas = q.includes('atma') || q.includes('pravas') || q.includes('soul') || q.includes('आत्मा') || q.includes('प्रवास') || q.includes('આત્મા') || q.includes('પ્રવાસ');
+        const isKrishnaBhavanamrita = q.includes('bhavanamrita') || q.includes('bhavanamrta') || q.includes('भावनामृत') || q.includes('कृष्णभावनामृत') || q.includes('કૃષ્ણભાવનામૃત');
+        const isJeevanKaSrotaJeevan = q.includes('jeevan') || q.includes('srota') || q.includes('life comes') || q.includes('जीवन') || q.includes('स्रोत') || q.includes('સ્રોત');
+        const isKarmaYoga = q.includes('karma') || q.includes('कर्म') || q.includes('कॉर्म') || q.includes('કર્મ') || q.includes('action');
+
+        if (isGeeta && (b.id === 'book-gita-yatharoop' || titleEn.includes('gita'))) return true;
+        if (isBhagavatam && (b.id === 'book-srimad-bhagavatam' || titleEn.includes('bhagavatam'))) return true;
+        if (isIsopanisad && (b.id === 'book-sri-isopanisad' || titleEn.includes('iso') || titleHi.includes('ईशोपनिषद्'))) return true;
+        if (isPurnaPrashna && (b.id === 'book-purna-prashna-purna-uttar' || titleHi.includes('पूर्ण'))) return true;
+        if (isPunaragaman && (b.id === 'book-punaragaman' || titleHi.includes('पुनरागमन'))) return true;
+        if (isSriKrishna && (b.id === 'book-lila-purushottam-sri-krishna' || titleHi.includes('कृष्ण') || titleHi.includes('लीला'))) return true;
+        if (isChaitanya && (b.id === 'book-chaitanya-shikshamrita' || titleHi.includes('चैतन्य'))) return true;
+        if (isEasyJourney && (b.id === 'book-easy-journey-to-other-planets' || titleHi.includes('अन्य'))) return true;
+        if (isAttainingKC && (b.id === 'book-attaining-krishna-consciousness' || titleHi.includes('कृष्णभावनामृत'))) return true;
+        if (isChallenge && (b.id === 'book-hare-krishna-challenge' || titleHi.includes('चुनौती'))) return true;
+        if (isAtmaKaPravas && (b.id === 'book-atma-ka-pravas' || titleHi.includes('आत्मा') || titleEn.includes('atma'))) return true;
+        if (isKrishnaBhavanamrita && (b.id === 'book-krishna-bhavanamrita' || b.id === 'book-attaining-krishna-consciousness' || titleHi.includes('कृष्णभावनामृत'))) return true;
+        if (isJeevanKaSrotaJeevan && (b.id === 'book-jeevan-ka-srota-jeevan' || titleHi.includes('जीवन'))) return true;
+        if (isKarmaYoga && (b.id === 'book-karma-yoga' || titleHi.includes('कर्म'))) return true;
+
+        return titleEn.includes(q) || titleHi.includes(q) || titleGu.includes(q) ||
+               authorEn.includes(q) || authorHi.includes(q) || authorGu.includes(q) ||
+               catEn.includes(q) || catHi.includes(q) || catGu.includes(q) ||
+               sumEn.includes(q) || sumHi.includes(q) || sumGu.includes(q);
+      });
+
+      if (filteredBooks.length === 0) {
+        container.innerHTML = `
+          <div class="library-no-results" style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-paper); border: 1px dashed var(--line-strong); border-radius: var(--radius-lg);">
+            <span style="font-size: 2.5rem; display: block; margin-bottom: 0.75rem;">📖</span>
+            <h4 class="sans-text" style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;" data-i18n="library_no_results_title">${i18n.t('library_no_results_title') || 'No matching books found'}</h4>
+            <p class="sans-text" style="font-size: 0.9rem; color: var(--text-muted); margin: 0;" data-i18n="library_no_results_hint">${i18n.t('library_no_results_hint') || 'Try searching for "Bhagavad Gita", "Bhagavatam", "Prabhupada", or "Scripture".'}</p>
           </div>
-          <div class="compact-card-actions">
-            <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="compact-btn-primary" onclick="event.stopPropagation()">
-              📖 ${btnText} ↗
-            </a>
-            <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer" class="compact-btn-secondary" onclick="event.stopPropagation()">
-              🏛️ ${officialSourceText} ↗
-            </a>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  // Initial render
-  renderBooksList(searchInput ? searchInput.value : '');
-
-  // Event Listeners for Real-time Search
-  if (searchInput) {
-    searchInput.oninput = (e) => {
-      const val = e.target.value;
-      if (searchClearBtn) searchClearBtn.style.display = val ? 'flex' : 'none';
-      renderBooksList(val);
-    };
-  }
-
-  if (searchClearBtn) {
-    searchClearBtn.onclick = () => {
-      if (searchInput) {
-        searchInput.value = '';
-        searchInput.focus();
+        `;
+        return;
       }
-      searchClearBtn.style.display = 'none';
-      renderBooksList('');
-    };
+
+      container.innerHTML = filteredBooks.map(b => {
+        const title = lang === 'hi' ? (b.titleHindi || b.title) : (lang === 'gu' ? (b.titleGujarati || b.title) : b.title);
+        const author = lang === 'hi' ? (b.authorHindi || b.author) : (lang === 'gu' ? (b.authorGujarati || b.author) : b.author);
+        const category = lang === 'hi' ? (b.categoryHindi || b.category) : (lang === 'gu' ? (b.categoryGujarati || b.category) : b.category);
+        const summary = lang === 'hi' ? (b.summaryHindi || b.summary) : (lang === 'gu' ? (b.summaryGujarati || b.summary) : b.summary);
+        const pdfUrl = b.pdfUrl;
+        const coverUrl = b.coverUrl;
+        const altText = b.altText || `${title} cover`;
+        const sourceUrl = b.sourceUrl || 'https://www.bbt.org/books/';
+
+        return `
+          <div class="compact-book-card" onclick="if(!event.target.closest('a')) window.open('${pdfUrl}', '_blank')">
+            <div>
+              <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="book-cover-link">
+                <div class="compact-cover-wrap">
+                  <img src="${coverUrl}" alt="${altText}" class="compact-cover-img" />
+                </div>
+              </a>
+              <span class="compact-badge badge-verified">${category}</span>
+              <h3 class="compact-book-title">${title}</h3>
+              <p class="compact-book-author">${byLabel} ${author}</p>
+              <p class="compact-book-summary">${summary}</p>
+            </div>
+            <div class="compact-card-actions">
+              <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="compact-btn-primary" onclick="event.stopPropagation()">
+                📖 ${btnText} ↗
+              </a>
+              <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer" class="compact-btn-secondary" onclick="event.stopPropagation()">
+                🏛️ ${officialSourceText} ↗
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Initial render
+    renderBooksList(searchInput ? searchInput.value : '');
+
+    // Event Listeners for Real-time Search
+    if (searchInput && !container.dataset.hasSearchListeners) {
+      container.dataset.hasSearchListeners = 'true';
+      searchInput.oninput = (e) => {
+        const val = e.target.value;
+        if (searchClearBtn) searchClearBtn.style.display = val ? 'flex' : 'none';
+        renderBooksList(val);
+      };
+
+      if (searchClearBtn) {
+        searchClearBtn.onclick = () => {
+          if (searchInput) {
+            searchInput.value = '';
+            searchInput.focus();
+          }
+          searchClearBtn.style.display = 'none';
+          renderBooksList('');
+        };
+      }
+    }
+  } catch (err) {
+    console.error('Error rendering Books section:', err);
   }
 }
 
 /* Render ISKCON Centers */
 function initCenters() {
-  const container = document.getElementById('centers-container');
-  const filterBtns = document.querySelectorAll('#centers-filters button');
-  const centers = INITIAL_DATA.iskconCenters || [];
+  try {
+    const container = document.getElementById('centers-container');
+    const filterBtns = document.querySelectorAll('#centers-filters button');
+    const centers = (dataManager && typeof dataManager.getCenters === 'function') ? dataManager.getCenters() : ((typeof INITIAL_DATA !== 'undefined' && Array.isArray(INITIAL_DATA.iskconCenters)) ? INITIAL_DATA.iskconCenters : []);
 
-  if (!container) return;
+    if (!container || !centers || centers.length === 0) return;
 
-  function render(region = 'all') {
-    let items = centers;
-    if (region !== 'all') {
-      items = centers.filter(c => c.region === region);
-    }
+    function render(region = 'all') {
+      let items = centers;
+      if (region !== 'all') {
+        items = centers.filter(c => c.region === region);
+      }
 
-    if (items.length === 0) {
-      container.innerHTML = '<p class="sans-text" style="color:var(--text-muted)">No centers found for this region.</p>';
-      return;
-    }
+      if (items.length === 0) {
+        container.innerHTML = '<p class="sans-text" style="color:var(--text-muted)">No centers found for this region.</p>';
+        return;
+      }
 
-    const translatedCenters = items.map(c => i18n.getContentCenter(c));
+      const translatedCenters = items.map(c => (i18n && typeof i18n.getContentCenter === 'function') ? i18n.getContentCenter(c) : c);
 
-    container.innerHTML = translatedCenters.map(c => `
-      <div class="glass-card" style="display:flex;flex-direction:column;justify-content:space-between">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem">
-            <span class="badge badge-verified">${c.region}</span>
-            <span class="sans-text" style="font-size:0.8rem;color:var(--saffron-500);font-weight:700">${i18n.t('est_label')} ${c.year}</span>
+      container.innerHTML = translatedCenters.map(c => `
+        <div class="glass-card" style="display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem">
+              <span class="badge badge-verified">${c.region}</span>
+              <span class="sans-text" style="font-size:0.8rem;color:var(--saffron-500);font-weight:700">${(i18n && typeof i18n.t === 'function') ? i18n.t('est_label') : 'Est.'} ${c.year}</span>
+            </div>
+            <h3 style="font-size:1.35rem;margin-bottom:0.25rem">${c.name}</h3>
+            <p class="sans-text" style="font-weight:600;color:var(--maroon-700);font-size:0.88rem;margin-bottom:0.75rem">📍 ${c.city}</p>
+            <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:1rem">${c.significance}</p>
           </div>
-          <h3 style="font-size:1.35rem;margin-bottom:0.25rem">${c.name}</h3>
-          <p class="sans-text" style="font-weight:600;color:var(--maroon-700);font-size:0.88rem;margin-bottom:0.75rem">📍 ${c.city}</p>
-          <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:1rem">${c.significance}</p>
+          <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:0.8rem;justify-content:center">
+            ${(i18n && typeof i18n.t === 'function') ? i18n.t('btn_visit_portal') : 'Visit Official Site ↗'}
+          </a>
         </div>
-        <a href="${c.url}" target="_blank" rel="noreferrer" class="btn btn-secondary" style="font-size:0.8rem;justify-content:center">
-          ${i18n.t('btn_visit_portal')}
-        </a>
-      </div>
-    `).join('');
+      `).join('');
+    }
+
+    if (filterBtns.length > 0 && !container.dataset.hasListeners) {
+      container.dataset.hasListeners = 'true';
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          render(btn.getAttribute('data-region'));
+        });
+      });
+    }
+
+    render('all');
+  } catch (err) {
+    console.error('Error rendering Centers section:', err);
   }
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      render(btn.getAttribute('data-region'));
-    });
-  });
-
-  render('all');
 }
 
 /* Render Sources */
 function initSources() {
-  const container = document.getElementById('sources-container');
-  if (!container) return;
+  try {
+    const container = document.getElementById('sources-container');
+    if (!container) return;
 
-  container.innerHTML = INITIAL_DATA.sources.map(s => `
-    <div class="glass-card" style="display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
-      <div>
-        <h3 style="font-size:1.15rem;margin-bottom:0.25rem">${s.name}</h3>
-        <p style="color:var(--text-muted);font-size:0.88rem;margin:0">${s.publisher} • ${s.type}</p>
+    const sources = (dataManager && typeof dataManager.getSources === 'function') ? dataManager.getSources() : ((typeof INITIAL_DATA !== 'undefined' && Array.isArray(INITIAL_DATA.sources)) ? INITIAL_DATA.sources : []);
+    if (!sources || sources.length === 0) return;
+
+    container.innerHTML = sources.map(s => `
+      <div class="glass-card" style="display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
+        <div>
+          <h3 style="font-size:1.15rem;margin-bottom:0.25rem">${s.name}</h3>
+          <p style="color:var(--text-muted);font-size:0.88rem;margin:0">${s.publisher} • ${s.type}</p>
+        </div>
+        <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:0.8rem;padding:0.4rem 0.9rem">
+          ${(i18n && typeof i18n.t === 'function') ? i18n.t('btn_view_source') : 'View Source ↗'}
+        </a>
       </div>
-      <a href="${s.url}" target="_blank" rel="noreferrer" class="btn btn-secondary" style="font-size:0.8rem;padding:0.4rem 0.9rem">
-        ${i18n.t('btn_view_source')}
-      </a>
-    </div>
-  `).join('');
+    `).join('');
+  } catch (err) {
+    console.error('Error rendering Sources section:', err);
+  }
 }
 
 /* Library Search Handler Stub */

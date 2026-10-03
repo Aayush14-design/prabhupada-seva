@@ -1,0 +1,72 @@
+Total book blocks: 15
+Total parsed books: 14
+
+1. [book-gita-yatharoop] Bhagavad Gita As It Is (Geeta Ji) / श्रीमद्भगवद्गीता यथारूप (गीता जी)
+   PDF: Library/bhagavad-gita/Bhagavad-gita.pdf (Exists: True)
+   Cover: images/Geeta image.jpeg (Exists: True)
+   Category: Foundational Scripture
+
+2. [book-srimad-bhagavatam] Śrīmad-Bhāgavatam / श्रीमद्भागवतम्
+   PDF: Library/bhagavatam/Bhagwatam.pdf (Exists: True)
+   Cover: images/Bhagwatam-image.jpeg (Exists: True)
+   Category: Amala Purana
+
+3. [book-sri-isopanisad] श्रीईशोपनिषद् / श्रीईशोपनिषद्
+   PDF: Library/iso-isopanisad/ISO_श्रीईशोपनिषद्.pdf (Exists: True)
+   Cover: images/sri-isopanisad.jpeg (Exists: True)
+   Category: Vedic Upanishad
+
+4. [book-purna-prashna-purna-uttar] पूर्ण प्रश्न पूर्ण उत्तर / पूर्ण प्रश्न पूर्ण उत्तर
+   PDF: Library/purna-prashna/purna-prashna-purna-uttar.pdf (Exists: True)
+   Cover: images/purna-prashna-image.jpeg (Exists: True)
+   Category: Conversations & Teachings
+
+5. [book-punaragaman] पुनरागमन / पुनरागमन
+   PDF: Library/punaragaman/CB_punaragaman.pdf (Exists: True)
+   Cover: images/punaragaman-image.jpeg (Exists: True)
+   Category: Spiritual Science
+
+6. [book-lila-purushottam-sri-krishna] लीला पुरुषोत्तम भगवान् श्रीकृष्ण / लीला पुरुषोत्तम भगवान् श्रीकृष्ण
+   PDF: Library/sri-krishna/sri-krishna.pdf (Exists: True)
+   Cover: images/sri-krishna-image.jpeg (Exists: True)
+   Category: Divine Pastimes
+
+7. [book-chaitanya-shikshamrita] भगवान् श्री चैतन्य महाप्रभु का शिक्षामृत / भगवान् श्री चैतन्य महाप्रभु का शिक्षामृत
+   PDF: Library/chaitanya-shikshamrita/chaitanya-shikshamrita.pdf (Exists: True)
+   Cover: images/chaitanya-shikshamrita-image.jpeg (Exists: True)
+   Category: Vedic Philosophy
+
+8. [book-easy-journey-to-other-planets] अन्य ग्रहों की सुगम यात्रा / अन्य ग्रहों की सुगम यात्रा
+   PDF: Library/easy-journey/easy-journey-to-other-planets.pdf (Exists: True)
+   Cover: images/easy-journey-image.jpeg (Exists: True)
+   Category: Vedic Science & Cosmology
+
+9. [book-attaining-krishna-consciousness] कृष्णभावनामृत की प्राप्ति / कृष्णभावनामृत की प्राप्ति
+   PDF: Library/attaining-krishna-consciousness/attaining-krishna-consciousness.pdf (Exists: True)
+   Cover: images/attaining-krishna-consciousness-image.jpeg (Exists: True)
+   Category: Practical Bhakti
+
+10. [book-hare-krishna-challenge] हरे कृष्ण चुनौती / हरे कृष्ण चुनौती
+   PDF: Library/hare-krishna-challenge/hare-krishna-challenge.pdf (Exists: True)
+   Cover: images/hare-krishna-challenge-image.jpeg (Exists: True)
+   Category: Vedic Preaching
+
+11. [book-atma-ka-pravas] आत्मा का प्रवास / आत्मा का प्रवास
+   PDF: Library/atma-ka-pravas/आत्मा का प्रवास.pdf (Exists: True)
+   Cover: images/आत्मा का प्रवास-image.jpeg (Exists: True)
+   Category: Spiritual Science
+
+12. [book-krishna-bhavanamrita] कृष्णभावनामृत / कृष्णभावनामृत
+   PDF: Library/krishna-bhavanamrita/कृष्णभावनामृत.pdf (Exists: True)
+   Cover: images/कृष्णभावनामृत-image.jpeg (Exists: True)
+   Category: Essential Teachings
+
+13. [book-jeevan-ka-srota-jeevan] जीवन का स्रोत जीवन / जीवन का स्रोत जीवन
+   PDF: Library/jeevan-ka-srota-jeevan/जीवन का स्रोत जीवन.pdf (Exists: True)
+   Cover: images/जीवन का स्रोत जीवन-image.jpeg (Exists: True)
+   Category: Scientific & Philosophical Critique
+
+14. [book-karma-yoga] कर्म योग / कर्म योग
+   PDF: Library/karma-yoga/कर्म योग.pdf (Exists: True)
+   Cover: images/कर्म योग-image.jpeg (Exists: True)
+   Category: Vedic Science & Action
