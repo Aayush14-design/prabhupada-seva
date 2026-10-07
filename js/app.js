@@ -537,6 +537,13 @@ function initBooks() {
         const isKrishnaBhavanamrita = q.includes('bhavanamrita') || q.includes('bhavanamrta') || q.includes('भावनामृत') || q.includes('कृष्णभावनामृत') || q.includes('કૃષ્ણભાવનામૃત');
         const isJeevanKaSrotaJeevan = q.includes('jeevan') || q.includes('srota') || q.includes('life comes') || q.includes('जीवन') || q.includes('स्रोत') || q.includes('સ્રોત');
         const isKarmaYoga = q.includes('karma') || q.includes('कर्म') || q.includes('कॉर्म') || q.includes('કર્મ') || q.includes('action');
+        const isUpadeshamrita = q.includes('upadesh') || q.includes('upadesamrita') || q.includes('upadesamrta') || q.includes('upadeshamrit') || q.includes('उपदेशामृत') || q.includes('ઉપદેશામૃત') || q.includes('nectar of instruction') || q.includes('instruction');
+        const isKrishnaKiOr = q.includes('krishna ki or') || q.includes('krishnakior') || q.includes('towards krishna') || q.includes('elevation') || q.includes('कृष्ण की ओर') || q.includes('કૃષ્ણ તરફ') || q.includes('ओर');
+        const isYogpath = q.includes('yogpath') || q.includes('yoga path') || q.includes('path of perfection') || q.includes('योगपथ') || q.includes('યોગપથ') || q.includes('योग');
+        const isYogKiPurnata = q.includes('yog ki purnata') || q.includes('yogkipurnata') || q.includes('perfection of yoga') || q.includes('योग की पूर्णता') || q.includes('યોગની પૂર્ણતા') || q.includes('पूर्णता');
+        const isRajvidya = q.includes('rajvidya') || q.includes('raja vidya') || q.includes('king of knowledge') || q.includes('राजविद्या') || q.includes('રાજવિદ્યા') || q.includes('विद्या');
+        const isAtmaSakshatkar = q.includes('atma sakshatkar') || q.includes('atmasakshatkar') || q.includes('self realization') || q.includes('self-realization') || q.includes('आत्म-साक्षात्कार') || q.includes('સાક્ષાત્કાર') || q.includes('साक्षात्कार');
+        const isKuntiShikshaen = q.includes('kunti') || q.includes('queen kunti') || q.includes('teachings of queen kunti') || q.includes('महारानी कुन्ती') || q.includes('कुन्ती') || q.includes('શિક્ષાઓ') || q.includes('शिक्षाएँ');
 
         if (isGeeta && (b.id === 'book-gita-yatharoop' || titleEn.includes('gita'))) return true;
         if (isBhagavatam && (b.id === 'book-srimad-bhagavatam' || titleEn.includes('bhagavatam'))) return true;
@@ -552,6 +559,13 @@ function initBooks() {
         if (isKrishnaBhavanamrita && (b.id === 'book-krishna-bhavanamrita' || b.id === 'book-attaining-krishna-consciousness' || titleHi.includes('कृष्णभावनामृत'))) return true;
         if (isJeevanKaSrotaJeevan && (b.id === 'book-jeevan-ka-srota-jeevan' || titleHi.includes('जीवन'))) return true;
         if (isKarmaYoga && (b.id === 'book-karma-yoga' || titleHi.includes('कर्म'))) return true;
+        if (isUpadeshamrita && (b.id === 'book-upadeshamrita' || titleHi.includes('उपदेशामृत') || titleEn.includes('upadesh'))) return true;
+        if (isKrishnaKiOr && (b.id === 'book-krishna-ki-or' || titleHi.includes('कृष्ण की ओर'))) return true;
+        if (isYogpath && (b.id === 'book-yogpath' || titleHi.includes('योगपथ'))) return true;
+        if (isYogKiPurnata && (b.id === 'book-yog-ki-purnata' || titleHi.includes('योग की पूर्णता'))) return true;
+        if (isRajvidya && (b.id === 'book-rajvidya' || titleHi.includes('राजविद्या'))) return true;
+        if (isAtmaSakshatkar && (b.id === 'book-atma-sakshatkar-ka-vigyan' || titleHi.includes('साक्षात्कार'))) return true;
+        if (isKuntiShikshaen && (b.id === 'book-maharani-kunti-ki-shikshaen' || titleHi.includes('कुन्ती'))) return true;
 
         return titleEn.includes(q) || titleHi.includes(q) || titleGu.includes(q) ||
                authorEn.includes(q) || authorHi.includes(q) || authorGu.includes(q) ||

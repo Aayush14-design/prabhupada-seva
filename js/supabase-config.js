@@ -34,7 +34,7 @@ class DataManager {
       'bhagavadgitaasitis', 'srimadbhagavatam', 'sriisopanisad', 'sriisopanishad',
       'perfectquestionsperfectanswers', 'teachingsoflordcaitanya', 'teachingsoflordchaitanya',
       'easyjourneytootherplanets', 'attainingkrishnaconsciousness', 'theharekrishnachallenge',
-      'reincarnation', 'punaragaman', 'karmayoga', 'lifecomesfromlife'
+      'reincarnation', 'punaragaman', 'karmayoga', 'lifecomesfromlife', 'upadeshamrita', 'nectarofinstruction', 'krishnakior', 'yogpath', 'pathofperfection', 'yogkipurnata', 'perfectionofyoga', 'rajvidya', 'kingofknowledge', 'atmasakshatkarkavigyan', 'scienceofselfrealization', 'maharanikuntikishikshaen', 'teachingsofqueenkunti'
     ];
     legacyAliases.forEach(alias => seedTitles.add(alias));
 
